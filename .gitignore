@@ -5,11 +5,6 @@
 .zshrc.local
 *.local
 
-# Ignore oh-my-zsh repo itself (we only track custom themes/plugins)
-.oh-my-zsh/*
-!.oh-my-zsh/themes/
-!.oh-my-zsh/themes/gmork.zsh-theme
-
 # Ignore sensitive data
 .ssh/
 .gnupg/

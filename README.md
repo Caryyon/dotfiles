@@ -63,9 +63,12 @@ export REPLICATE_API_TOKEN='your-token-here'
 # Add other secrets...
 ```
 
-### Install Oh-My-Zsh Plugins
+### Setup Oh-My-Zsh Theme and Plugins
 
 ```bash
+# Copy gmork theme to oh-my-zsh themes directory
+cp ~/.config/zsh/themes/gmork.zsh-theme ~/.oh-my-zsh/themes/
+
 # Install zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
