@@ -1,8 +1,8 @@
 # Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/cwolff/.zsh/completions:"* ]]; then export FPATH="/Users/cwolff/.zsh/completions:$FPATH"; fi
+if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then export FPATH="$HOME/.zsh/completions:$FPATH"; fi
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/Users/cwolff/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$PATH:./node_modules/.bin
@@ -86,7 +86,7 @@ alias mux=tmuxinator
 alias cat=bat
 alias yw="yarn workspace"
 alias ls=eza
-alias lvim="/Users/cwolff/.local/bin/lvim"
+alias lvim="$HOME/.local/bin/lvim"
 alias lg=lazygit
 alias ld=lazydocker
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME'
@@ -100,7 +100,7 @@ export yw="yarn workspace"
 # export CONTENTFUL_BRANCH=Cary_Wolff_DTCW_Cheerful_ui
 alias cb="echo $CONTENTFUL_BRANCH"
 
-export PATH="/Users/cwolff2/.deno/bin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   exec tmux
@@ -128,7 +128,7 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# source /Users/cwolff2/.docker/init-zsh.sh || true # Added by Docker Desktop
+# source $HOME/.docker/init-zsh.sh || true # Added by Docker Desktop
 
 # Kill Port
 alias killport='function _killport() { lsof -ti:$1 | xargs kill -9; }; _killport'
@@ -142,10 +142,12 @@ eval "$(op completion zsh)"; compdef _op op
 export PAGER="most"
 
 # pnpm
-export PNPM_HOME="/Users/cwolff/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
-. "/Users/cwolff/.deno/env"
+
+# Load deno env if it exists
+[ -f "$HOME/.deno/env" ] && . "$HOME/.deno/env"
 
 # Load local secrets (not tracked in git)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
