@@ -1,0 +1,23 @@
+# Dotfiles gitignore - only track what we explicitly add
+# This prevents accidentally committing secrets and junk
+
+# Ignore secrets and local config
+.zshrc.local
+*.local
+
+# Ignore oh-my-zsh repo itself (we only track custom themes/plugins)
+.oh-my-zsh/*
+!.oh-my-zsh/themes/
+!.oh-my-zsh/themes/gmork.zsh-theme
+
+# Ignore sensitive data
+.ssh/
+.gnupg/
+.aws/
+*.pem
+*.key
+
+# Ignore cache and temporary files
+*.cache
+.DS_Store
+node_modules/

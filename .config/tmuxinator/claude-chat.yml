@@ -1,0 +1,25 @@
+name: claude-chat
+root: ~/Code
+
+on_project_start:
+  - mkdir -p /tmp/claude-pipes
+  - mkfifo /tmp/claude-pipes/pipe1 2>/dev/null || true
+  - mkfifo /tmp/claude-pipes/pipe2 2>/dev/null || true
+
+on_project_stop:
+  - rm -f /tmp/claude-pipes/pipe1 /tmp/claude-pipes/pipe2
+  - rmdir /tmp/claude-pipes 2>/dev/null || true
+
+windows:
+  - claude-conversation:
+      layout: main-horizontal
+      panes:
+        - claude1:
+          - echo "Claude 1 starting..."
+          - tail -f /tmp/claude-pipes/pipe2 | claude 2>&1 | tee /tmp/claude-pipes/pipe1
+        - claude2:
+          - echo "Claude 2 starting..."
+          - tail -f /tmp/claude-pipes/pipe1 | claude 2>&1 | tee /tmp/claude-pipes/pipe2
+        - conversation:
+          - echo "=== Conversation Log ==="
+          - tail -f /tmp/claude-pipes/pipe1 /tmp/claude-pipes/pipe2 2>/dev/null | grep -v "^$" | while read line; do echo "[$(date +%H:%M:%S)] $line"; done

@@ -1,0 +1,22 @@
+# Previous theme (backed up)
+# import = ["~/Code/alacritty-dracula/dracula.toml"]
+
+# Gmork theme - inspired by the black wolf from The Neverending Story
+import = ["~/.config/alacritty/gmork.alacritty.toml"]
+
+[window] 
+dimensions = { columns = 0, lines = 0 }
+padding = { x = 8, y = 16 }
+dynamic_padding = false
+decorations = "None"
+startup_mode = "Maximized"
+opacity = 1.0
+
+[font]  
+normal = { family = "Hack Nerd Font" }
+bold = { family = "Hack Nerd Font", style = 'Medium' }
+italic = { family = 'Hack Nerd Font' }
+size = 14.0
+offset = { x = 0, y = 0 }
+glyph_offset = { x = 0, y = 0 }
+

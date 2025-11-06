@@ -1,0 +1,93 @@
+# Gmork Theme for Alacritty
+# Inspired by the black wolf from The NeverEnding Story
+# Matching the Neovim Gmork color scheme
+
+[colors]
+
+[colors.primary]
+background = "#000000"  # pure black
+foreground = "#ffffff"  # pure glowing white
+dim_foreground = "#dddddd"  # brighter mist gray
+
+[colors.cursor]
+text = "#000000"        # pure black
+cursor = "#ffffff"      # pure glowing white
+
+[colors.vi_mode_cursor]
+text = "#000000"        # pure black
+cursor = "#ff0000"      # pure blazing red
+
+[colors.selection]
+text = "#ffffff"        # pure glowing white
+background = "#404040"  # medium_gray
+
+[colors.hints]
+start = { foreground = "#000000", background = "#ff4400" }  # pure black on electric orange
+end = { foreground = "#000000", background = "#dddddd" }    # pure black on bright mist gray
+
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+[colors.footer_bar]
+foreground = "#ffffff"  # pure glowing white
+background = "#111111"  # darker shadow_black
+
+[colors.search]
+matches = { foreground = "#000000", background = "#ff4400" }      # pure black on electric orange
+focused_match = { foreground = "#000000", background = "#ff0000" } # pure black on blazing red
+
+[colors.normal]
+black = "#111111"      # darker shadow_black
+red = "#ff0000"        # Pure blazing red
+green = "#00ff00"      # Pure electric green
+yellow = "#ff4400"     # Electric orange
+blue = "#0088ff"       # Electric blue
+magenta = "#ff00ff"    # Pure electric magenta
+cyan = "#00ffff"       # Electric cyan
+white = "#ffffff"      # Pure glowing white
+
+[colors.bright]
+black = "#404040"      # medium_gray
+red = "#ff0044"        # Electric crimson
+green = "#88ff00"      # Electric lime green
+yellow = "#ff8800"     # Molten orange
+blue = "#00ff88"       # Bright neon green
+magenta = "#ff00ff"    # Pure electric magenta
+cyan = "#00ffff"       # Electric cyan
+white = "#ffffff"      # Pure glowing white
+
+[colors.dim]
+black = "#252525"      # charcoal
+red = "#8b3a3a"        # blood_red
+green = "#2d5a3d"      # gmork_green
+yellow = "#4a3b35"     # wolf_brown
+blue = "#2d5a3d"       # gmork_green
+magenta = "#3d2f2a"    # dark_brown
+cyan = "#2d5a3d"       # gmork_green
+white = "#b0b0b0"      # brighter mist_gray to match Neovim
+
+# Indexed Colors for extended palette
+[[colors.indexed_colors]]
+index = 16
+color = "#252525"      # charcoal
+
+[[colors.indexed_colors]]
+index = 17
+color = "#2f2f2f"      # dark_gray
+
+[[colors.indexed_colors]]
+index = 18
+color = "#555555"      # light_gray
+
+[[colors.indexed_colors]]
+index = 19
+color = "#5c4a42"      # earth_brown
+
+[[colors.indexed_colors]]
+index = 20
+color = "#4a3b35"      # wolf_brown
+
+[[colors.indexed_colors]]
+index = 21
+color = "#3d2f2a"      # dark_brown

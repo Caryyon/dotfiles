@@ -1,0 +1,14 @@
+# Sparkforge tmuxinator configuration
+name: sparkforge
+root: /Users/cwolff/Code/SPARKFORGE/sparkforge
+
+# Runs on project start, always
+on_project_start: source ~/.nvm/nvm.sh && nvm use
+
+windows:
+  - dev:
+      layout: 59ad,214x62,0,0{140x62,0,0,167,73x62,141,0[73x30,141,0,168,73x31,141,31,169]}
+      panes:
+        - nvim .
+        - claude
+        - yarn dev
