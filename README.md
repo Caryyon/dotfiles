@@ -33,7 +33,7 @@ gem install tmuxinator
 
 ```bash
 # Clone the dotfiles repo as a bare repository
-git clone --bare https://github.com/YOUR_USERNAME/dotfiles.git $HOME/.dotfiles.git
+git clone --bare https://github.com/Caryyon/dotfiles.git $HOME/.dotfiles.git
 
 # Define the dotfiles alias temporarily
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME'
