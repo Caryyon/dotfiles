@@ -65,17 +65,6 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   
-  -- Session management
-  {
-    "rmagatti/auto-session",
-    lazy = false,
-    opts = {
-      log_level = "error",
-      auto_session_enabled = true,
-      auto_save_enabled = true,
-      auto_restore_enabled = true,
-    },
-  },
 
   -- Sidekick for Claude Code integration
   -- {
