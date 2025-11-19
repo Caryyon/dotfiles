@@ -258,6 +258,15 @@ require("lazy").setup({
     end,
   },
   
+  -- TidalCycles live coding
+  {
+    "tidalcycles/vim-tidal",
+    ft = "tidal",
+    config = function()
+      vim.g.tidal_target = "terminal"
+    end,
+  },
+
   -- Debugging
   {
     "mfussenegger/nvim-dap",

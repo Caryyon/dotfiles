@@ -151,3 +151,4 @@ export PATH="$PNPM_HOME:$PATH"
 
 # Load local secrets (not tracked in git)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+source ${HOME}/.ghcup/env
