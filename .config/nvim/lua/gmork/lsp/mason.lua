@@ -4,7 +4,7 @@ local servers = {
 	"cssls",
 	"html",
 	"pyright",
-	"bashls",
+	-- "bashls", -- Commented out due to installation issues
 	"jsonls",
 	"yamlls",
   "rust_analyzer",
