@@ -91,6 +91,13 @@ alias lg=lazygit
 alias ld=lazydocker
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME'
 
+# Nvim health checks
+alias nvim-check='nvim --headless "+checkhealth" +qa'
+alias nvim-test='nvim --headless +qa && echo "✓ nvim starts cleanly" || echo "✗ nvim failed to start"'
+
+# Safe dotfiles pull - test nvim after pulling
+alias dotfiles-pull='dotfiles pull && nvim --headless +qa && echo "✓ Dotfiles pulled, nvim OK" || echo "⚠ Dotfiles pulled but nvim has issues"'
+
 
 export EDITOR=nvim
 export GIT_EDITOR=nvim
@@ -149,7 +156,11 @@ export PATH="$PNPM_HOME:$PATH"
 # Load deno env if it exists
 [ -f "$HOME/.deno/env" ] && . "$HOME/.deno/env"
 
-# Load local secrets (not tracked in git)
+# Load local secrets and machine-specific configs (not tracked in git)
+# Use ~/.zshrc.local for machine-specific configurations like:
+# - Local tool paths that differ between machines
+# - Machine-specific environment variables
+# - Private API keys or tokens
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 # Load ghcup env if it exists
