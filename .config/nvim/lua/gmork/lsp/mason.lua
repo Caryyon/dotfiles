@@ -9,7 +9,7 @@ local servers = {
 	"yamlls",
 	"rust_analyzer",
 	"tailwindcss",
-	"denols",
+	-- "denols", -- Disabled to avoid conflicts with ts_ls
 	"svelte",
 	"mdx_analyzer",
 	"clangd",
