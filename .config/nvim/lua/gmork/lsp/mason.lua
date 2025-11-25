@@ -26,6 +26,10 @@ local settings = {
 }
 
 require("mason").setup(settings)
+require("mason-lspconfig").setup({
+	ensure_installed = servers,
+	automatic_installation = true,
+})
 
 -- Use new vim.lsp.config API (Neovim 0.11+)
 for _, server in pairs(servers) do
