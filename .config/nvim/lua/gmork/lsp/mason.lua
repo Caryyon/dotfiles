@@ -1,15 +1,22 @@
 local servers = {
 	"lua_ls",
-  "ts_ls",
+	"ts_ls",
 	"cssls",
 	"html",
 	"pyright",
 	-- "bashls", -- Commented out due to installation issues
 	"jsonls",
 	"yamlls",
-  "rust_analyzer",
-  "tailwindcss",
-  -- "denols",
+	"rust_analyzer",
+	"tailwindcss",
+	"denols",
+	"svelte",
+	"mdx_analyzer",
+	"clangd",
+	"eslint",
+	"graphql",
+	"marksman",
+	"remark_ls",
 }
 
 local settings = {
