@@ -46,48 +46,11 @@ M.setup = function()
   })
 end
 
-local function ts_go_to_source_definition()
-  local params = vim.lsp.util.make_position_params()
-  local current_file = vim.api.nvim_buf_get_name(0)
-
-  vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result)
-    if not result or vim.tbl_isempty(result) then
-      return
-    end
-
-    -- Normalize result to always be a list
-    local definitions = vim.islist(result) and result or { result }
-
-    -- Find definition outside current file (prefer node_modules or other files)
-    local target = nil
-    for _, def in ipairs(definitions) do
-      local uri = def.uri or def.targetUri
-      if uri then
-        local path = vim.uri_to_fname(uri)
-        if path ~= current_file then
-          target = def
-          break
-        end
-      end
-    end
-
-    -- Fall back to first result if all are in current file
-    target = target or definitions[1]
-
-    -- Jump to the location
-    local uri = target.uri or target.targetUri
-    local range = target.range or target.targetSelectionRange
-    if uri and range then
-      vim.lsp.util.jump_to_location({ uri = uri, range = range }, "utf-8")
-    end
-  end)
-end
-
 local function lsp_keymaps(bufnr)
   local opts = { noremap = true, silent = true }
   local keymap = vim.api.nvim_buf_set_keymap
   keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  vim.keymap.set("n", "gd", ts_go_to_source_definition, { buffer = bufnr, noremap = true, silent = true })
+  keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
   keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
   keymap(bufnr, "n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
@@ -104,8 +67,12 @@ local function lsp_keymaps(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
-  if client.name == "tsserver" then
+  if client.name == "vtsls" then
     client.server_capabilities.documentFormattingProvider = false
+    -- Use vtsls go-to-source-definition for gd (skips .d.ts files)
+    vim.keymap.set("n", "gd", function()
+      require("vtsls").commands.goto_source_definition(0)
+    end, { buffer = bufnr, noremap = true, silent = true })
   end
 
   if client.name == "lua_ls" then

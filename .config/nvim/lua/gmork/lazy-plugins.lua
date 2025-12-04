@@ -173,6 +173,13 @@ require("lazy").setup({
       "williamboman/mason-lspconfig.nvim",
     },
   },
+
+  -- vtsls for TypeScript (better go-to-source-definition support)
+  {
+    "yioneko/nvim-vtsls",
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    dependencies = { "neovim/nvim-lspconfig" },
+  },
   
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" } },
   { "MunifTanjim/prettier.nvim", ft = { "javascript", "typescript", "json", "css", "html" } },
