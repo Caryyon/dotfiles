@@ -69,10 +69,6 @@ end
 M.on_attach = function(client, bufnr)
   if client.name == "vtsls" then
     client.server_capabilities.documentFormattingProvider = false
-    -- Use vtsls go-to-source-definition for gd (skips .d.ts files)
-    vim.keymap.set("n", "gd", function()
-      require("vtsls").commands.goto_source_definition(0)
-    end, { buffer = bufnr, noremap = true, silent = true })
   end
 
   if client.name == "lua_ls" then
@@ -80,6 +76,14 @@ M.on_attach = function(client, bufnr)
   end
 
   lsp_keymaps(bufnr)
+
+  -- Override gd for vtsls AFTER lsp_keymaps sets defaults
+  if client.name == "vtsls" then
+    vim.keymap.set("n", "gd", function()
+      require("vtsls").commands.goto_source_definition(0)
+    end, { buffer = bufnr, noremap = true, silent = true, desc = "Go to source definition" })
+  end
+
   local status_ok, illuminate = pcall(require, "illuminate")
   if not status_ok then
     return
