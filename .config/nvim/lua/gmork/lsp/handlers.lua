@@ -46,11 +46,25 @@ M.setup = function()
   })
 end
 
+local function ts_go_to_source_definition()
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request(0, "workspace/executeCommand", {
+    command = "_typescript.goToSourceDefinition",
+    arguments = { vim.api.nvim_buf_get_name(0), params.position },
+  }, function(_, result)
+    if result and #result > 0 then
+      vim.lsp.util.jump_to_location(result[1], "utf-8")
+    else
+      vim.lsp.buf.definition() -- fallback
+    end
+  end)
+end
+
 local function lsp_keymaps(bufnr)
   local opts = { noremap = true, silent = true }
   local keymap = vim.api.nvim_buf_set_keymap
   keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+  vim.keymap.set("n", "gd", ts_go_to_source_definition, { buffer = bufnr, noremap = true, silent = true })
   keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
   keymap(bufnr, "n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
