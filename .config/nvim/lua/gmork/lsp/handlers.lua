@@ -48,14 +48,37 @@ end
 
 local function ts_go_to_source_definition()
   local params = vim.lsp.util.make_position_params()
-  vim.lsp.buf_request(0, "workspace/executeCommand", {
-    command = "_typescript.goToSourceDefinition",
-    arguments = { vim.api.nvim_buf_get_name(0), params.position },
-  }, function(_, result)
-    if result and #result > 0 then
-      vim.lsp.util.jump_to_location(result[1], "utf-8")
-    else
-      vim.lsp.buf.definition() -- fallback
+  local current_file = vim.api.nvim_buf_get_name(0)
+
+  vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result)
+    if not result or vim.tbl_isempty(result) then
+      return
+    end
+
+    -- Normalize result to always be a list
+    local definitions = vim.islist(result) and result or { result }
+
+    -- Find definition outside current file (prefer node_modules or other files)
+    local target = nil
+    for _, def in ipairs(definitions) do
+      local uri = def.uri or def.targetUri
+      if uri then
+        local path = vim.uri_to_fname(uri)
+        if path ~= current_file then
+          target = def
+          break
+        end
+      end
+    end
+
+    -- Fall back to first result if all are in current file
+    target = target or definitions[1]
+
+    -- Jump to the location
+    local uri = target.uri or target.targetUri
+    local range = target.range or target.targetSelectionRange
+    if uri and range then
+      vim.lsp.util.jump_to_location({ uri = uri, range = range }, "utf-8")
     end
   end)
 end
