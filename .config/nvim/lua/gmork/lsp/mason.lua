@@ -38,7 +38,8 @@ require("mason-lspconfig").setup({
 	automatic_installation = true,
 })
 
--- Use new vim.lsp.config API (Neovim 0.11+)
+local lspconfig = require("lspconfig")
+
 for _, server in pairs(servers) do
 	local opts = {
 		on_attach = require("gmork.lsp.handlers").on_attach,
@@ -50,20 +51,6 @@ for _, server in pairs(servers) do
 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
 	end
 
-	-- Register with new API
-	if not vim.lsp.config[server] then
-		vim.lsp.config[server] = {
-			cmd = opts.cmd,
-			filetypes = opts.filetypes,
-			root_markers = opts.root_markers,
-			settings = opts.settings,
-		}
-	end
-
-	-- Enable the LSP
-	vim.lsp.enable(server, {
-		on_attach = opts.on_attach,
-		capabilities = opts.capabilities,
-	})
+	lspconfig[server].setup(opts)
 end
 
