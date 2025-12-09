@@ -38,12 +38,23 @@ require("mason-lspconfig").setup({
 	automatic_installation = true,
 })
 
-local lspconfig = require("lspconfig")
+local handlers = require("gmork.lsp.handlers")
 
+-- Use LspAttach autocmd for on_attach (Neovim 0.11+ pattern)
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
+	callback = function(ev)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		if client then
+			handlers.on_attach(client, ev.buf)
+		end
+	end,
+})
+
+-- Configure and enable LSP servers
 for _, server in pairs(servers) do
 	local opts = {
-		on_attach = require("gmork.lsp.handlers").on_attach,
-		capabilities = require("gmork.lsp.handlers").capabilities,
+		capabilities = handlers.capabilities,
 	}
 
 	local require_ok, conf_opts = pcall(require, "gmork.lsp.settings." .. server)
@@ -51,6 +62,7 @@ for _, server in pairs(servers) do
 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
 	end
 
-	lspconfig[server].setup(opts)
+	vim.lsp.config[server] = opts
+	vim.lsp.enable(server)
 end
 
