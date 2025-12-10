@@ -179,6 +179,9 @@ require("lazy").setup({
     "yioneko/nvim-vtsls",
     ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
     dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require("vtsls").config({})
+    end,
   },
   
   { "RRethy/vim-illuminate", event = { "BufReadPost", "BufNewFile" } },

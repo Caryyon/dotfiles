@@ -80,7 +80,13 @@ M.on_attach = function(client, bufnr)
   -- Override gd for vtsls AFTER lsp_keymaps sets defaults
   if client.name == "vtsls" then
     vim.keymap.set("n", "gd", function()
-      require("vtsls").commands.goto_source_definition(0)
+      local ok, vtsls = pcall(require, "vtsls")
+      if ok and vtsls.commands and vtsls.commands.goto_source_definition then
+        vtsls.commands.goto_source_definition(0)
+      else
+        -- Fallback to standard definition if vtsls not available
+        vim.lsp.buf.definition()
+      end
     end, { buffer = bufnr, noremap = true, silent = true, desc = "Go to source definition" })
   end
 
