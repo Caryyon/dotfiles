@@ -1,6 +1,6 @@
 return {
-  root_markers = { "package.json" },
-  single_file_support = false,
+  root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
+  single_file_support = true,
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
   settings = {
     typescript = {
