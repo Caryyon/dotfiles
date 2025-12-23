@@ -16,31 +16,32 @@ local check_backspace = function()
 end
 
 local kind_icons = {
-	Text = "",
-	Method = "",
-	Function = "",
-	Constructor = "",
-	Field = "",
-	Variable = "",
-	Class = "",
-	Interface = "",
-	Module = "",
-	Property = "",
-	Unit = "",
-	Value = "",
-	Enum = "",
-	Keyword = "",
-	Snippet = "",
-	Color = "",
-	File = "",
-	Reference = "",
-	Folder = "",
-	EnumMember = "",
-	Constant = "",
-	Struct = "",
-	Event = "",
-	Operator = "",
-	TypeParameter = "",
+	Text = "",
+	Method = "",
+	Function = "",
+	Constructor = "",
+	Field = "",
+	Variable = "",
+	Class = "",
+	Interface = "",
+	Module = "",
+	Property = "",
+	Unit = "",
+	Value = "",
+	Enum = "",
+	Keyword = "",
+	Snippet = "",
+	Color = "",
+	File = "",
+	Reference = "",
+	Folder = "",
+	EnumMember = "",
+	Constant = "",
+	Struct = "",
+	Event = "",
+	Operator = "",
+	TypeParameter = "",
+	Copilot = "",
 }
 
 cmp.setup({
@@ -68,7 +69,7 @@ cmp.setup({
 				cmp.select_next_item()
 			elseif luasnip.expandable() then
 				luasnip.expand()
-			elseif luasnip.expand_or_jumpable() then
+			elseif luasnip.expand_or_jump()then
 				luasnip.expand_or_jump()
 			elseif check_backspace() then
 				fallback()
@@ -103,16 +104,18 @@ cmp.setup({
 				buffer = "",
 				path = "",
 				emoji = "",
+				copilot = "",
 			})[entry.source.name]
 			return vim_item
 		end,
 	},
 	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "nvim_lua" },
-		{ name = "luasnip" },
-		{ name = "buffer" },
-		{ name = "path" },
+		{ name = "copilot", group_index = 2 },
+		{ name = "nvim_lsp", group_index = 2 },
+		{ name = "nvim_lua", group_index = 2 },
+		{ name = "luasnip", group_index = 2 },
+		{ name = "buffer", group_index = 2 },
+		{ name = "path", group_index = 2 },
 	},
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,

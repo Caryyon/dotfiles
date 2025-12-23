@@ -235,6 +235,25 @@ require("lazy").setup({
   
   -- AI Integration
   {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+    event = "InsertEnter",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+  {
     "nomnivore/ollama.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = { "Ollama", "OllamaModel", "OllamaServe", "OllamaServeStop" },
