@@ -1,32 +1,78 @@
 # Dotfiles
 
-My personal development environment configuration using the bare git repository method.
+My personal development environment configuration using the bare git repository method. Works on **macOS** and **Linux**.
 
 ## What's Included
 
 - **Neovim** - Full configuration with custom gmork theme and LSP setup
 - **Zsh** - Shell configuration with oh-my-zsh and custom gmork theme
-- **Tmux** - Terminal multiplexer configuration
+- **Tmux** - Terminal multiplexer configuration with session persistence
 - **Alacritty** - GPU-accelerated terminal emulator config
 - **Tmuxinator** - Tmux session manager project configs
 
-## Setup on New Machine
+## Quick Start (Automated)
+
+The easiest way to get set up on a new machine:
+
+```bash
+# Download and run the install script
+curl -fsSL https://raw.githubusercontent.com/Caryyon/dotfiles/main/install.sh | bash
+```
+
+Or clone first and run locally:
+
+```bash
+git clone https://github.com/Caryyon/dotfiles.git /tmp/dotfiles
+bash /tmp/dotfiles/install.sh
+```
+
+## Manual Setup
 
 ### Prerequisites
 
-Install these tools first:
+#### macOS
+
 ```bash
-# Install Homebrew (if on macOS)
+# Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install essential tools
-brew install git neovim tmux zsh alacritty fzf bat eza lazygit lazydocker
+brew install git neovim tmux zsh fzf bat eza lazygit ripgrep fd
 
-# Install oh-my-zsh
+# Optional GUI apps
+brew install --cask alacritty
+```
+
+#### Debian/Ubuntu
+
+```bash
+sudo apt update
+sudo apt install -y git neovim tmux zsh fzf bat ripgrep fd-find curl
+
+# bat and fd have different names on Debian
+sudo ln -sf /usr/bin/batcat /usr/local/bin/bat
+sudo ln -sf /usr/bin/fdfind /usr/local/bin/fd
+
+# eza (check latest release: https://github.com/eza-community/eza/releases)
+# or install via cargo: cargo install eza
+```
+
+#### Fedora
+
+```bash
+sudo dnf install -y git neovim tmux zsh fzf bat eza ripgrep fd-find
+```
+
+#### Arch Linux
+
+```bash
+sudo pacman -Syu git neovim tmux zsh fzf bat eza lazygit ripgrep fd
+```
+
+### Install oh-my-zsh
+
+```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Install tmuxinator
-gem install tmuxinator
 ```
 
 ### Clone Dotfiles
@@ -41,26 +87,16 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME'
 # Checkout the actual files
 dotfiles checkout
 
-# If the above fails (because files already exist), backup and remove them:
-# mkdir -p ~/.dotfiles-backup
-# dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} ~/.dotfiles-backup/{}
-# dotfiles checkout
+# If the above fails (because files already exist), backup and try again:
+mkdir -p ~/.dotfiles-backup
+dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} ~/.dotfiles-backup/{}
+dotfiles checkout
 
 # Hide untracked files
 dotfiles config --local status.showUntrackedFiles no
 
 # Source your new zshrc (which includes the dotfiles alias)
 source ~/.zshrc
-```
-
-### Setup Secrets
-
-Create `~/.zshrc.local` with your API keys and secrets:
-```bash
-# Example ~/.zshrc.local
-export OPENAI_API_KEY='your-key-here'
-export REPLICATE_API_TOKEN='your-token-here'
-# Add other secrets...
 ```
 
 ### Setup Oh-My-Zsh Theme and Plugins
@@ -76,9 +112,35 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/p
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 ```
 
+### Install Tmux Plugin Manager
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Then in tmux, press prefix + I to install plugins
+```
+
+### Install NVM (Node Version Manager)
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
+
+### Setup Secrets
+
+Create `~/.zshrc.local` with your API keys and machine-specific configs:
+
+```bash
+# Example ~/.zshrc.local
+export OPENAI_API_KEY='your-key-here'
+export REPLICATE_API_TOKEN='your-token-here'
+# Machine-specific paths, etc.
+```
+
 ### Install Neovim Plugins
 
 Open neovim and let lazy.nvim install all plugins:
+
 ```bash
 nvim
 # Plugins will auto-install on first launch
@@ -86,7 +148,7 @@ nvim
 
 ## Usage
 
-Once setup is complete, use the `dotfiles` command instead of `git` for managing your configuration:
+Use the `dotfiles` command instead of `git` for managing your configuration:
 
 ```bash
 # Check status
@@ -105,6 +167,22 @@ dotfiles push
 dotfiles pull
 ```
 
+## Tool Dependencies
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| `neovim` | Editor | Required |
+| `tmux` | Terminal multiplexer | Required |
+| `zsh` | Shell | Required |
+| `fzf` | Fuzzy finder | Required |
+| `bat` | Better cat | Recommended |
+| `eza` | Better ls | Recommended |
+| `lazygit` | Git UI | Recommended |
+| `ripgrep` | Fast grep | Recommended |
+| `fd` | Fast find | Recommended |
+| `lazydocker` | Docker UI | Optional |
+| `alacritty` | Terminal emulator | Optional |
+
 ## Important Notes
 
 - **Never commit secrets!** Use `~/.zshrc.local` for API keys and sensitive data
@@ -114,7 +192,9 @@ dotfiles pull
 ## Troubleshooting
 
 ### Files conflict on checkout
+
 Backup existing files and try again:
+
 ```bash
 mkdir -p ~/.dotfiles-backup
 dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} ~/.dotfiles-backup/{}
@@ -122,15 +202,48 @@ dotfiles checkout
 ```
 
 ### Neovim plugins not loading
+
 Try manually syncing plugins:
+
 ```bash
 nvim
 :Lazy sync
 ```
 
 ### Zsh plugins not working
+
 Ensure plugins are cloned and .zshrc is sourced:
+
 ```bash
 ls ~/.oh-my-zsh/custom/plugins/
 source ~/.zshrc
+```
+
+### Tmux plugins not installing
+
+Make sure TPM is installed, then press `prefix + I` in tmux:
+
+```bash
+# Check if TPM exists
+ls ~/.tmux/plugins/tpm
+
+# If not, install it
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+### Clipboard not working
+
+- **macOS**: Should work out of the box
+- **Linux X11**: Install `xclip` or `xsel`
+- **Linux Wayland**: Install `wl-clipboard`
+
+```bash
+# Debian/Ubuntu
+sudo apt install xclip  # or wl-clipboard for Wayland
+
+# Fedora
+sudo dnf install xclip  # or wl-clipboard for Wayland
+
+# Arch
+sudo pacman -S xclip    # or wl-clipboard for Wayland
 ```

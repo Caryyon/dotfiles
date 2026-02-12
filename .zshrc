@@ -1,12 +1,29 @@
 # Add deno completions to search path
 if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then export FPATH="$HOME/.zsh/completions:$FPATH"; fi
+
+# Platform detection
+export IS_MAC=false
+export IS_LINUX=false
+if [[ "$(uname)" == "Darwin" ]]; then
+  export IS_MAC=true
+elif [[ "$(uname)" == "Linux" ]]; then
+  export IS_LINUX=true
+fi
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
+
+# Docker path (platform-specific)
+if [[ "$IS_MAC" == true ]]; then
+  export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
+fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$PATH:./node_modules/.bin
-export PATH=/opt/local/bin:$PATH
+
+# MacPorts (macOS only)
+[ -d "/opt/local/bin" ] && export PATH=/opt/local/bin:$PATH
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -140,16 +157,26 @@ load-nvmrc
 # Kill Port
 alias killport='function _killport() { lsof -ti:$1 | xargs kill -9; }; _killport'
 
+# GMORK
+alias gmork="ssh cwolff@lattice.black"
+
+
 # SPARKFORGE
 alias sf="ssh sparkforge@192.168.69.69"
-# 1Password
-eval "$(op completion zsh)"; compdef _op op
+# 1Password (if installed)
+if command -v op &> /dev/null; then
+  eval "$(op completion zsh)"; compdef _op op
+fi
 
 # colored man pages
 export PAGER="most"
 
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
+# pnpm (cross-platform)
+if [[ "$IS_MAC" == true ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
@@ -165,3 +192,16 @@ export PATH="$PNPM_HOME:$PATH"
 
 # Load ghcup env if it exists
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
+
+# SSH tunnel shortcut
+tunnel() {
+  if [ -z "$1" ]; then
+    echo "Usage: tunnel <port>"
+    return 1
+  fi
+  local port="$1"
+  echo "Tunneling localhost:${port} -> lattice.black:${port}"
+  ssh -L "${port}:localhost:${port}" cwolff@lattice.black -N
+}
+# Sage (if installed)
+[ -d "$HOME/.sage/bin" ] && export PATH="$HOME/.sage/bin:$PATH"
