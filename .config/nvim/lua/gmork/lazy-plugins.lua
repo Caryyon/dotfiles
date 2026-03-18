@@ -234,14 +234,19 @@ require("lazy").setup({
   { "mbbill/undotree", cmd = "UndotreeToggle" },
   
   -- AI Integration
+  -- Copilot: Set COPILOT_GITHUB_ENTERPRISE_HOST in ~/.zshrc.local for enterprise
+  -- Example: export COPILOT_GITHUB_ENTERPRISE_HOST="github.mycompany.com"
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "VeryLazy",
+    event = "InsertEnter",
     config = function()
+      local enterprise_host = vim.env.COPILOT_GITHUB_ENTERPRISE_HOST
       require("copilot").setup({
         suggestion = { enabled = false },
         panel = { enabled = false },
+        copilot_node_command = vim.env.COPILOT_NODE_COMMAND or "node",
+        github_enterprise_host = enterprise_host,
       })
     end,
   },
