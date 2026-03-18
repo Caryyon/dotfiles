@@ -146,6 +146,25 @@ nvim
 # Plugins will auto-install on first launch
 ```
 
+### Setup GitHub Copilot
+
+After plugins install, authenticate Copilot with your GitHub account:
+
+```vim
+:Copilot auth
+```
+
+This opens a browser for GitHub authentication. Once complete, Copilot suggestions appear in your completion menu.
+
+### Install LSP Servers
+
+LSP servers are auto-installed via Mason. To manually install or update:
+
+```vim
+:Mason
+# Press i on any server to install
+```
+
 ## Usage
 
 Use the `dotfiles` command instead of `git` for managing your configuration:

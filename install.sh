@@ -62,7 +62,7 @@ install_dependencies() {
       debian)
         print_step "Installing packages via apt..."
         sudo apt update
-        sudo apt install -y git neovim tmux zsh fzf bat ripgrep fd-find curl
+        sudo apt install -y git neovim tmux zsh fzf bat ripgrep fd-find curl xclip
         # bat is installed as 'batcat' on Debian/Ubuntu
         if ! command -v bat &> /dev/null && command -v batcat &> /dev/null; then
           sudo ln -sf /usr/bin/batcat /usr/local/bin/bat
@@ -78,11 +78,11 @@ install_dependencies() {
         ;;
       fedora)
         print_step "Installing packages via dnf..."
-        sudo dnf install -y git neovim tmux zsh fzf bat eza ripgrep fd-find
+        sudo dnf install -y git neovim tmux zsh fzf bat eza ripgrep fd-find xclip wl-clipboard
         ;;
       arch)
         print_step "Installing packages via pacman..."
-        sudo pacman -Syu --noconfirm git neovim tmux zsh fzf bat eza lazygit ripgrep fd
+        sudo pacman -Syu --noconfirm git neovim tmux zsh fzf bat eza lazygit ripgrep fd xclip wl-clipboard
         ;;
       *)
         print_warning "Unknown Linux distro. Please install manually: git neovim tmux zsh fzf bat eza ripgrep fd"
@@ -236,8 +236,9 @@ main() {
   echo "Next steps:"
   echo "  1. Restart your terminal or run: source ~/.zshrc"
   echo "  2. Open nvim and let plugins install: nvim"
-  echo "  3. In tmux, press prefix + I to install plugins"
-  echo "  4. Create ~/.zshrc.local for your secrets/API keys"
+  echo "  3. In nvim, authenticate Copilot: :Copilot auth"
+  echo "  4. In tmux, press prefix + I to install plugins"
+  echo "  5. Create ~/.zshrc.local for your secrets/API keys"
   echo ""
 
   if [ -d "$HOME/.dotfiles-backup" ] && [ "$(ls -A "$HOME/.dotfiles-backup" 2>/dev/null)" ]; then

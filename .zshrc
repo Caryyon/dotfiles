@@ -163,6 +163,9 @@ alias gmork="ssh cwolff@lattice.black"
 
 # SPARKFORGE
 alias sf="ssh sparkforge@192.168.69.69"
+
+# NOVA
+alias nova="ssh -t mini-001@100.72.37.71 'openclaw tui'"
 # 1Password (if installed)
 if command -v op &> /dev/null; then
   eval "$(op completion zsh)"; compdef _op op
