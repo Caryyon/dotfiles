@@ -126,15 +126,22 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
-### Setup Secrets
+### Setup Machine-Specific Config
 
-Create `~/.zshrc.local` with your API keys and machine-specific configs:
+Create `~/.zshrc.local` for secrets and machine-specific settings (not tracked in git):
 
 ```bash
-# Example ~/.zshrc.local
+# Example ~/.zshrc.local for PERSONAL machine
 export OPENAI_API_KEY='your-key-here'
-export REPLICATE_API_TOKEN='your-token-here'
-# Machine-specific paths, etc.
+
+# Example ~/.zshrc.local for WORK machine (behind corporate proxy)
+# 1. Export corporate CA bundle (run once):
+#    (security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain && \
+#     security find-certificate -a -p /Library/Keychains/System.keychain) > ~/.corporate-ca-bundle.pem
+#
+# 2. Add these to ~/.zshrc.local:
+export NODE_EXTRA_CA_CERTS="$HOME/.corporate-ca-bundle.pem"
+export COPILOT_GITHUB_ENTERPRISE_HOST="github.yourcompany.com"
 ```
 
 ### Install Neovim Plugins
@@ -265,4 +272,45 @@ sudo dnf install xclip  # or wl-clipboard for Wayland
 
 # Arch
 sudo pacman -S xclip    # or wl-clipboard for Wayland
+```
+
+### Copilot "unable to get local issuer certificate" error
+
+This happens on corporate networks with SSL inspection (Zscaler, Netskope, etc.).
+
+**Fix for macOS:**
+
+```bash
+# Export all system certificates including corporate CA
+(security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain && \
+ security find-certificate -a -p /Library/Keychains/System.keychain) > ~/.corporate-ca-bundle.pem
+
+# Add to ~/.zshrc.local
+echo 'export NODE_EXTRA_CA_CERTS="$HOME/.corporate-ca-bundle.pem"' >> ~/.zshrc.local
+source ~/.zshrc
+```
+
+**Fix for Linux:**
+
+```bash
+# Point to system CA bundle (should include corporate certs if IT configured them)
+echo 'export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/ca-certificates.crt"' >> ~/.zshrc.local
+source ~/.zshrc
+```
+
+**Nuclear option (if nothing else works):**
+
+```bash
+echo 'export NODE_TLS_REJECT_UNAUTHORIZED=0' >> ~/.zshrc.local
+```
+
+Then restart nvim and run `:Copilot auth` again.
+
+### Copilot with GitHub Enterprise
+
+For work machines using GitHub Enterprise Copilot:
+
+```bash
+# Add to ~/.zshrc.local
+export COPILOT_GITHUB_ENTERPRISE_HOST="github.yourcompany.com"
 ```
