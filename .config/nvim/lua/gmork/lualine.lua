@@ -3,6 +3,13 @@ if not status_ok then
   return
 end
 
+-- Try to load gmork custom theme
+local gmork_ok, gmork = pcall(require, "colors.gmork")
+local lualine_theme = "auto"
+if gmork_ok and gmork.lualine_theme then
+  lualine_theme = gmork.lualine_theme
+end
+
 local hide_in_width = function()
   return vim.fn.winwidth(0) > 80
 end
@@ -106,7 +113,7 @@ lualine.setup {
   options = {
     globalstatus = true,
     icons_enabled = true,
-    theme = "auto",
+    theme = lualine_theme,
     component_separators = { left = "", right = "" },
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },

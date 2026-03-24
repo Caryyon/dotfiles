@@ -6,6 +6,14 @@ end
 local actions = require "telescope.actions"
 
 telescope.setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+  },
   defaults = {
     find_command = "rg" ,
     prompt_prefix = " ",
@@ -97,3 +105,6 @@ end
 
 -- Make functions available globally
 _G.TelescopeCustom = M
+
+-- Load fzf-native extension for better performance
+pcall(telescope.load_extension, "fzf")

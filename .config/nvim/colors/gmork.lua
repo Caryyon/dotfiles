@@ -1,51 +1,56 @@
 -- Gmork colorscheme for Neovim
 -- Inspired by the black wolf from The Neverending Story
--- A matte dark theme emphasizing deep blacks and subtle mystical accents
+-- A dark, atmospheric theme with luminous green eyes in blue-black darkness
+--
+-- Palette Philosophy:
+-- - Backgrounds: Blue-black tones (Gmork's fur)
+-- - Primary accent: Luminous green (Gmork's glowing eyes)
+-- - Secondary accent: Storm purple (The Nothing)
+-- - Danger: Blood crimson (not neon)
+-- - Text: Bone/fang white (slightly warm)
 
 local M = {}
 
 -- Color palette - Gmork inspired from The NeverEnding Story
--- Matching Alacritty terminal colors for consistency
+-- Matching Alacritty and tmux for consistency
 local colors = {
-  -- Deep void blacks and dark tones (matching tmux theme)
-  void_black = "#000000",
-  shadow_black = "#111111",
-  charcoal = "#222222",
-  dark_gray = "#2f2f2f",
-  medium_gray = "#404040",
-  light_gray = "#555555",
-  
-  -- Mystical greens (supernatural glow like Gmork's eyes)
-  gmork_green = "#00ff00",      -- Pure electric green
-  eerie_green = "#00ff88",      -- Bright neon green  
-  bright_green = "#88ff00",     -- Electric lime green
-  toxic_green = "#00ff44",      -- Radioactive green
-  
-  -- Fiery oranges and reds (blazing supernatural fire)
-  fang_orange = "#ff4400",      -- Electric orange
-  fire_red = "#ff0000",         -- Pure blazing red
-  blood_red = "#ff0044",        -- Electric crimson
-  ember_orange = "#ff8800",     -- Molten orange
-  
-  -- Mystical browns and earth tones
-  dark_brown = "#3d2f2a",
-  wolf_brown = "#4a3b35",
-  earth_brown = "#5c4a42",
-  
-  -- Light tones (supernatural brightness)
-  bone_white = "#ffffff",       -- Pure glowing white
-  mist_gray = "#dddddd",        -- Brighter mist gray
-  pale_green = "#88ff88",       -- Electric pale green
-  
-  -- Additional colors for compatibility
-  warning_amber = "#ff4400",    -- Same as fang_orange
-  wolf_purple = "#88ff00",      -- Same as bright_green
-  
-  -- Extended color palette for enhanced syntax highlighting
-  mystic_purple = "#ff00ff",    -- Pure electric magenta for special constructs
-  shadow_blue = "#0088ff",      -- Electric blue for namespaces/modules
-  wolf_cyan = "#00ffff",        -- Electric cyan for attributes
-  rust_brown = "#ffaa00",       -- Bright amber for enums/constants
+  -- === BACKGROUNDS (Gmork's Blue-Black Fur) ===
+  void = "#0a0a12",             -- Deepest blue-black
+  shadow = "#12121a",           -- Dark blue-black
+  cave = "#1c1c26",             -- Cave darkness
+  cave_stone = "#2a2a36",       -- Lighter cave
+  stone = "#3f3f4a",            -- Cave stone highlight
+
+  -- === GMORK'S EYES (Primary Accent - Luminous Green) ===
+  eye_glow = "#3edd78",         -- Main luminous green
+  eye_shine = "#4ade80",        -- Brighter eye shine
+  eye_dim = "#166534",          -- Dim glow in darkness
+
+  -- === THE NOTHING (Storm & Void - Purple) ===
+  storm = "#2d1b4e",            -- Dark storm clouds
+  void_purple = "#4c1d95",      -- The Nothing's void
+  lightning = "#7c3aed",        -- Lightning flash
+  lightning_bright = "#a78bfa", -- Bright lightning
+
+  -- === BLOOD & DANGER (Crimson, not neon) ===
+  blood = "#dc2626",            -- Blood crimson
+  wound = "#991b1b",            -- Darker wound
+  ember = "#ea580c",            -- Ember orange
+  ember_bright = "#f97316",     -- Bright ember
+
+  -- === BONE & MIST (Text colors) ===
+  fang = "#f4f4f5",             -- Fang white (main text)
+  bone = "#d4d4d8",             -- Bone (secondary text)
+  mist = "#a1a1aa",             -- Mist gray
+  fog = "#71717a",              -- Fog (dimmed)
+
+  -- === EARTH & CAVE ===
+  root = "#78350f",             -- Cave roots (brown)
+  moss = "#365314",             -- Cave moss
+
+  -- === ADDITIONAL COLORS ===
+  cyan = "#22d3ee",             -- Pale cyan (for terminal compat)
+  cyan_bright = "#67e8f9",      -- Bright cyan
 }
 
 -- Apply the colorscheme
@@ -55,327 +60,327 @@ function M.setup()
   if vim.fn.exists("syntax_on") then
     vim.cmd("syntax reset")
   end
-  
+
   -- Set background
   vim.o.background = "dark"
   vim.g.colors_name = "gmork"
-  
+
   -- Helper function
   local function hi(group, opts)
     vim.api.nvim_set_hl(0, group, opts)
   end
-  
-  -- Base colors (darker background to match Alacritty)
-  hi("Normal", { fg = colors.bone_white, bg = "#000000" })
-  hi("NonText", { fg = colors.medium_gray })
-  
-  -- UI Elements (darker backgrounds to match Alacritty)
-  hi("CursorLine", { bg = "#111111" })
-  hi("CursorColumn", { bg = "#111111" })
-  hi("LineNr", { fg = colors.light_gray })
-  hi("CursorLineNr", { fg = colors.mist_gray, bg = "#111111", bold = true })
-  hi("SignColumn", { fg = colors.light_gray, bg = "#000000" })
-  hi("ColorColumn", { bg = "#111111" })
-  
+
+  -- Base colors (blue-black background to match Alacritty)
+  hi("Normal", { fg = colors.fang, bg = colors.void })
+  hi("NonText", { fg = colors.stone })
+
+  -- UI Elements (blue-black backgrounds)
+  hi("CursorLine", { bg = colors.shadow })
+  hi("CursorColumn", { bg = colors.shadow })
+  hi("LineNr", { fg = colors.fog })
+  hi("CursorLineNr", { fg = colors.mist, bg = colors.shadow, bold = true })
+  hi("SignColumn", { fg = colors.fog, bg = colors.void })
+  hi("ColorColumn", { bg = colors.shadow })
+
   -- Selection and search
-  hi("Visual", { bg = colors.dark_gray })
-  hi("Search", { fg = colors.void_black, bg = colors.ember_orange })
-  hi("IncSearch", { fg = colors.void_black, bg = colors.bright_green })
-  
-  -- Splits and statusline (darker backgrounds)
-  hi("VertSplit", { fg = colors.dark_gray, bg = "#000000" })
-  hi("StatusLine", { fg = colors.bone_white, bg = "#222222" })
-  hi("StatusLineNC", { fg = colors.mist_gray, bg = "#111111" })
-  
-  -- Tabs (darker backgrounds)
-  hi("TabLine", { fg = colors.mist_gray, bg = "#111111" })
-  hi("TabLineFill", { bg = "#111111" })
-  hi("TabLineSel", { fg = colors.bone_white, bg = "#222222", bold = true })
-  
-  -- Popup menus (darker backgrounds)
-  hi("Pmenu", { fg = colors.bone_white, bg = "#222222" })
-  hi("PmenuSel", { fg = colors.void_black, bg = colors.bright_green })
-  hi("PmenuSbar", { bg = "#333333" })
-  hi("PmenuThumb", { bg = colors.medium_gray })
-  
-  -- Folding (darker backgrounds)
-  hi("Folded", { fg = colors.mist_gray, bg = "#111111" })
-  hi("FoldColumn", { fg = colors.light_gray, bg = "#000000" })
-  
+  hi("Visual", { bg = colors.cave_stone })
+  hi("Search", { fg = colors.void, bg = colors.lightning })
+  hi("IncSearch", { fg = colors.void, bg = colors.eye_shine })
+
+  -- Splits and statusline
+  hi("VertSplit", { fg = colors.cave_stone, bg = colors.void })
+  hi("StatusLine", { fg = colors.fang, bg = colors.cave })
+  hi("StatusLineNC", { fg = colors.mist, bg = colors.shadow })
+
+  -- Tabs
+  hi("TabLine", { fg = colors.mist, bg = colors.shadow })
+  hi("TabLineFill", { bg = colors.shadow })
+  hi("TabLineSel", { fg = colors.fang, bg = colors.cave, bold = true })
+
+  -- Popup menus
+  hi("Pmenu", { fg = colors.fang, bg = colors.cave })
+  hi("PmenuSel", { fg = colors.void, bg = colors.eye_shine })
+  hi("PmenuSbar", { bg = colors.cave_stone })
+  hi("PmenuThumb", { bg = colors.stone })
+
+  -- Folding
+  hi("Folded", { fg = colors.mist, bg = colors.shadow })
+  hi("FoldColumn", { fg = colors.fog, bg = colors.void })
+
   -- Syntax highlighting
-  hi("Comment", { fg = colors.mist_gray, italic = true })
-  hi("String", { fg = colors.eerie_green })
-  hi("Character", { fg = colors.bright_green })
-  hi("Number", { fg = colors.fang_orange })
-  hi("Boolean", { fg = colors.toxic_green })
-  hi("Float", { fg = colors.fang_orange })
-  
-  hi("Identifier", { fg = colors.bone_white })
-  hi("Function", { fg = colors.bright_green })
-  
-  hi("Statement", { fg = colors.fire_red, bold = true })
-  hi("Conditional", { fg = colors.fire_red })
-  hi("Repeat", { fg = colors.fire_red })
-  hi("Label", { fg = colors.ember_orange })
-  hi("Operator", { fg = colors.mist_gray })
-  hi("Keyword", { fg = colors.fire_red })
-  hi("Exception", { fg = colors.blood_red })
-  
-  hi("PreProc", { fg = colors.gmork_green })
-  hi("Include", { fg = colors.gmork_green })
-  hi("Define", { fg = colors.gmork_green })
-  hi("Macro", { fg = colors.gmork_green })
-  hi("PreCondit", { fg = colors.gmork_green })
-  
-  hi("Type", { fg = colors.toxic_green })
-  hi("StorageClass", { fg = colors.toxic_green })
-  hi("Structure", { fg = colors.toxic_green })
-  hi("Typedef", { fg = colors.toxic_green })
-  
-  hi("Special", { fg = colors.ember_orange })
-  hi("SpecialChar", { fg = colors.fang_orange })
-  hi("Tag", { fg = colors.ember_orange })
-  hi("Delimiter", { fg = colors.mist_gray })
-  hi("SpecialComment", { fg = colors.mist_gray, italic = true })
-  hi("Debug", { fg = colors.blood_red })
+  hi("Comment", { fg = colors.mist, italic = true })
+  hi("String", { fg = colors.eye_glow })
+  hi("Character", { fg = colors.eye_shine })
+  hi("Number", { fg = colors.ember })
+  hi("Boolean", { fg = colors.eye_shine })
+  hi("Float", { fg = colors.ember })
+
+  hi("Identifier", { fg = colors.fang })
+  hi("Function", { fg = colors.eye_shine })
+
+  hi("Statement", { fg = colors.blood, bold = true })
+  hi("Conditional", { fg = colors.blood })
+  hi("Repeat", { fg = colors.blood })
+  hi("Label", { fg = colors.ember_bright })
+  hi("Operator", { fg = colors.mist })
+  hi("Keyword", { fg = colors.blood })
+  hi("Exception", { fg = colors.wound })
+
+  hi("PreProc", { fg = colors.eye_glow })
+  hi("Include", { fg = colors.eye_glow })
+  hi("Define", { fg = colors.eye_glow })
+  hi("Macro", { fg = colors.eye_glow })
+  hi("PreCondit", { fg = colors.eye_glow })
+
+  hi("Type", { fg = colors.eye_shine })
+  hi("StorageClass", { fg = colors.eye_shine })
+  hi("Structure", { fg = colors.eye_shine })
+  hi("Typedef", { fg = colors.eye_shine })
+
+  hi("Special", { fg = colors.ember_bright })
+  hi("SpecialChar", { fg = colors.ember })
+  hi("Tag", { fg = colors.ember_bright })
+  hi("Delimiter", { fg = colors.mist })
+  hi("SpecialComment", { fg = colors.mist, italic = true })
+  hi("Debug", { fg = colors.wound })
   
   -- Errors and warnings
-  hi("Error", { fg = colors.bone_white, bg = colors.blood_red })
-  hi("ErrorMsg", { fg = colors.bone_white, bg = colors.blood_red })
-  hi("WarningMsg", { fg = colors.void_black, bg = colors.ember_orange })
-  
+  hi("Error", { fg = colors.fang, bg = colors.wound })
+  hi("ErrorMsg", { fg = colors.fang, bg = colors.wound })
+  hi("WarningMsg", { fg = colors.void, bg = colors.ember })
+
   -- Diff colors
-  hi("DiffAdd", { fg = colors.bright_green, bg = "#111111" })
-  hi("DiffChange", { fg = colors.ember_orange, bg = "#111111" })
-  hi("DiffDelete", { fg = colors.blood_red, bg = "#111111" })
-  hi("DiffText", { fg = colors.void_black, bg = colors.ember_orange })
-  
+  hi("DiffAdd", { fg = colors.eye_shine, bg = colors.shadow })
+  hi("DiffChange", { fg = colors.ember, bg = colors.shadow })
+  hi("DiffDelete", { fg = colors.blood, bg = colors.shadow })
+  hi("DiffText", { fg = colors.void, bg = colors.ember })
+
   -- Spell checking
-  hi("SpellBad", { fg = colors.blood_red, underline = true })
-  hi("SpellCap", { fg = colors.ember_orange, underline = true })
-  hi("SpellLocal", { fg = colors.gmork_green, underline = true })
-  hi("SpellRare", { fg = colors.fire_red, underline = true })
-  
+  hi("SpellBad", { fg = colors.blood, underline = true })
+  hi("SpellCap", { fg = colors.ember, underline = true })
+  hi("SpellLocal", { fg = colors.eye_glow, underline = true })
+  hi("SpellRare", { fg = colors.lightning, underline = true })
+
   -- Git signs and other plugins
-  hi("GitSignsAdd", { fg = colors.bright_green })
-  hi("GitSignsChange", { fg = colors.ember_orange })
-  hi("GitSignsDelete", { fg = colors.blood_red })
-  
+  hi("GitSignsAdd", { fg = colors.eye_shine })
+  hi("GitSignsChange", { fg = colors.ember })
+  hi("GitSignsDelete", { fg = colors.blood })
+
   -- LSP and diagnostics
-  hi("DiagnosticError", { fg = colors.blood_red })
-  hi("DiagnosticWarn", { fg = colors.ember_orange })
-  hi("DiagnosticInfo", { fg = colors.gmork_green })
-  hi("DiagnosticHint", { fg = colors.mist_gray })
-  
+  hi("DiagnosticError", { fg = colors.blood })
+  hi("DiagnosticWarn", { fg = colors.ember })
+  hi("DiagnosticInfo", { fg = colors.eye_glow })
+  hi("DiagnosticHint", { fg = colors.mist })
+
   -- Telescope (if used)
-  hi("TelescopeBorder", { fg = colors.dark_gray })
+  hi("TelescopeBorder", { fg = colors.cave_stone })
   
   -- MDX and Markdown specific enhancements
-  hi("markdownH1", { fg = colors.bone_white, bold = true })
-  hi("markdownH2", { fg = colors.fire_red, bold = true })
-  hi("markdownH3", { fg = colors.bright_green, bold = true })
-  hi("markdownH4", { fg = colors.ember_orange, bold = true })
-  hi("markdownH5", { fg = colors.toxic_green, bold = true })
-  hi("markdownH6", { fg = colors.mist_gray, bold = true })
-  
-  hi("markdownCode", { fg = colors.fang_orange, bg = "#111111" })
-  hi("markdownCodeBlock", { fg = colors.fang_orange, bg = "#111111" })
-  hi("markdownCodeDelimiter", { fg = colors.medium_gray })
-  
-  hi("markdownLink", { fg = colors.gmork_green, underline = true })
-  hi("markdownLinkText", { fg = colors.bright_green })
-  hi("markdownLinkDelimiter", { fg = colors.medium_gray })
-  hi("markdownUrl", { fg = colors.gmork_green })
-  
-  hi("markdownBold", { fg = colors.bone_white, bold = true })
-  hi("markdownItalic", { fg = colors.bone_white, italic = true })
-  hi("markdownBoldItalic", { fg = colors.bone_white, bold = true, italic = true })
-  
-  hi("markdownBlockquote", { fg = colors.mist_gray, italic = true })
-  hi("markdownRule", { fg = colors.dark_gray })
-  
-  hi("markdownListMarker", { fg = colors.fire_red })
-  hi("markdownOrderedListMarker", { fg = colors.fire_red })
-  
+  hi("markdownH1", { fg = colors.fang, bold = true })
+  hi("markdownH2", { fg = colors.blood, bold = true })
+  hi("markdownH3", { fg = colors.eye_shine, bold = true })
+  hi("markdownH4", { fg = colors.ember, bold = true })
+  hi("markdownH5", { fg = colors.lightning, bold = true })
+  hi("markdownH6", { fg = colors.mist, bold = true })
+
+  hi("markdownCode", { fg = colors.ember, bg = colors.shadow })
+  hi("markdownCodeBlock", { fg = colors.ember, bg = colors.shadow })
+  hi("markdownCodeDelimiter", { fg = colors.stone })
+
+  hi("markdownLink", { fg = colors.eye_glow, underline = true })
+  hi("markdownLinkText", { fg = colors.eye_shine })
+  hi("markdownLinkDelimiter", { fg = colors.stone })
+  hi("markdownUrl", { fg = colors.eye_glow })
+
+  hi("markdownBold", { fg = colors.fang, bold = true })
+  hi("markdownItalic", { fg = colors.fang, italic = true })
+  hi("markdownBoldItalic", { fg = colors.fang, bold = true, italic = true })
+
+  hi("markdownBlockquote", { fg = colors.mist, italic = true })
+  hi("markdownRule", { fg = colors.cave_stone })
+
+  hi("markdownListMarker", { fg = colors.blood })
+  hi("markdownOrderedListMarker", { fg = colors.blood })
+
   -- MDX JSX components
-  hi("mdxJSX", { fg = colors.bright_green })
-  hi("mdxJsxBlock", { fg = colors.bright_green })
-  hi("mdxJsxElement", { fg = colors.bright_green })
-  hi("mdxComponent", { fg = colors.toxic_green, bold = true })
-  hi("mdxImport", { fg = colors.fire_red })
-  hi("mdxExport", { fg = colors.fire_red })
-  
+  hi("mdxJSX", { fg = colors.eye_shine })
+  hi("mdxJsxBlock", { fg = colors.eye_shine })
+  hi("mdxJsxElement", { fg = colors.eye_shine })
+  hi("mdxComponent", { fg = colors.eye_glow, bold = true })
+  hi("mdxImport", { fg = colors.blood })
+  hi("mdxExport", { fg = colors.blood })
+
   -- Tree-sitter MDX highlighting
-  hi("@text.literal.markdown", { fg = colors.fang_orange, bg = "#111111" })
-  hi("@text.title.markdown", { fg = colors.bone_white, bold = true })
-  hi("@text.title.1.markdown", { fg = colors.bone_white, bold = true })
-  hi("@text.title.2.markdown", { fg = colors.fire_red, bold = true })
-  hi("@text.title.3.markdown", { fg = colors.bright_green, bold = true })
-  hi("@text.title.4.markdown", { fg = colors.ember_orange, bold = true })
-  hi("@text.title.5.markdown", { fg = colors.toxic_green, bold = true })
-  hi("@text.title.6.markdown", { fg = colors.mist_gray, bold = true })
-  
-  hi("@text.quote.markdown", { fg = colors.mist_gray, italic = true })
-  hi("@text.uri.markdown", { fg = colors.gmork_green, underline = true })
-  hi("@text.emphasis.markdown", { fg = colors.bone_white, italic = true })
-  hi("@text.strong.markdown", { fg = colors.bone_white, bold = true })
-  
+  hi("@text.literal.markdown", { fg = colors.ember, bg = colors.shadow })
+  hi("@text.title.markdown", { fg = colors.fang, bold = true })
+  hi("@text.title.1.markdown", { fg = colors.fang, bold = true })
+  hi("@text.title.2.markdown", { fg = colors.blood, bold = true })
+  hi("@text.title.3.markdown", { fg = colors.eye_shine, bold = true })
+  hi("@text.title.4.markdown", { fg = colors.ember, bold = true })
+  hi("@text.title.5.markdown", { fg = colors.lightning, bold = true })
+  hi("@text.title.6.markdown", { fg = colors.mist, bold = true })
+
+  hi("@text.quote.markdown", { fg = colors.mist, italic = true })
+  hi("@text.uri.markdown", { fg = colors.eye_glow, underline = true })
+  hi("@text.emphasis.markdown", { fg = colors.fang, italic = true })
+  hi("@text.strong.markdown", { fg = colors.fang, bold = true })
+
   -- JSX in MDX
-  hi("@tag.tsx", { fg = colors.bright_green })
-  hi("@tag.attribute.tsx", { fg = colors.toxic_green })
-  hi("@tag.delimiter.tsx", { fg = colors.medium_gray })
-  hi("@constructor.tsx", { fg = colors.bright_green, bold = true })
-  hi("TelescopeSelection", { bg = colors.dark_gray })
-  hi("TelescopeMatching", { fg = colors.fire_red, bold = true })
+  hi("@tag.tsx", { fg = colors.eye_shine })
+  hi("@tag.attribute.tsx", { fg = colors.eye_glow })
+  hi("@tag.delimiter.tsx", { fg = colors.stone })
+  hi("@constructor.tsx", { fg = colors.eye_shine, bold = true })
+  hi("TelescopeSelection", { bg = colors.cave_stone })
+  hi("TelescopeMatching", { fg = colors.blood, bold = true })
   
   -- Tree-sitter highlights
-  hi("@variable", { fg = colors.bone_white })
-  hi("@function", { fg = colors.bright_green })
-  hi("@keyword", { fg = colors.fire_red })
-  hi("@string", { fg = colors.eerie_green })
-  hi("@comment", { fg = colors.mist_gray, italic = true })
-  hi("@type", { fg = colors.toxic_green })
-  hi("@constant", { fg = colors.fang_orange })
-  hi("@number", { fg = colors.fang_orange })
-  hi("@operator", { fg = colors.mist_gray })
-  
+  hi("@variable", { fg = colors.fang })
+  hi("@function", { fg = colors.eye_shine })
+  hi("@keyword", { fg = colors.blood })
+  hi("@string", { fg = colors.eye_glow })
+  hi("@comment", { fg = colors.mist, italic = true })
+  hi("@type", { fg = colors.eye_shine })
+  hi("@constant", { fg = colors.ember })
+  hi("@number", { fg = colors.ember })
+  hi("@operator", { fg = colors.mist })
+
   -- TypeScript/JavaScript specific
-  hi("@keyword.import", { fg = colors.fire_red })
-  hi("@keyword.export", { fg = colors.fire_red })
-  hi("@keyword.function", { fg = colors.fire_red })
-  hi("@variable.builtin", { fg = colors.toxic_green })
-  hi("@function.builtin", { fg = colors.bright_green })
-  hi("@type.builtin", { fg = colors.toxic_green })
-  hi("@constructor", { fg = colors.bright_green })
-  hi("@parameter", { fg = colors.bone_white })
-  hi("@property", { fg = colors.bone_white })
-  
+  hi("@keyword.import", { fg = colors.blood })
+  hi("@keyword.export", { fg = colors.blood })
+  hi("@keyword.function", { fg = colors.blood })
+  hi("@variable.builtin", { fg = colors.lightning })
+  hi("@function.builtin", { fg = colors.eye_shine })
+  hi("@type.builtin", { fg = colors.eye_shine })
+  hi("@constructor", { fg = colors.eye_shine })
+  hi("@parameter", { fg = colors.fang })
+  hi("@property", { fg = colors.bone })
+
   -- React/JSX specific
-  hi("@tag", { fg = colors.bright_green })
-  hi("@tag.attribute", { fg = colors.toxic_green })
-  hi("@tag.delimiter", { fg = colors.medium_gray })
-  hi("@tag.builtin", { fg = colors.bright_green })
-  
+  hi("@tag", { fg = colors.eye_shine })
+  hi("@tag.attribute", { fg = colors.eye_glow })
+  hi("@tag.delimiter", { fg = colors.stone })
+  hi("@tag.builtin", { fg = colors.eye_shine })
+
   -- Modern Tree-sitter groups (for newer versions)
-  hi("@lsp.type.class", { fg = colors.toxic_green })
-  hi("@lsp.type.interface", { fg = colors.toxic_green })
-  hi("@lsp.type.type", { fg = colors.toxic_green })
-  hi("@lsp.type.function", { fg = colors.bright_green })
-  hi("@lsp.type.method", { fg = colors.bright_green })
-  hi("@lsp.type.variable", { fg = colors.bone_white })
-  hi("@lsp.type.property", { fg = colors.bone_white })
-  hi("@lsp.type.parameter", { fg = colors.bone_white })
-  hi("@lsp.type.keyword", { fg = colors.fire_red })
-  
-  -- Nvim-tree (darker background to match)
-  hi("NvimTreeNormal", { fg = colors.bone_white, bg = "#000000" })
-  hi("NvimTreeFolderIcon", { fg = colors.fire_red })
-  hi("NvimTreeFolderName", { fg = colors.bone_white })
-  hi("NvimTreeIndentMarker", { fg = colors.dark_gray })
-  hi("NvimTreeOpenedFolderName", { fg = colors.bright_green })
-  
-  -- Which-key (darker background)
-  hi("WhichKey", { fg = colors.fire_red })
-  hi("WhichKeyGroup", { fg = colors.gmork_green })
-  hi("WhichKeyDesc", { fg = colors.bone_white })
-  hi("WhichKeySeperator", { fg = colors.mist_gray })
-  hi("WhichKeySeparator", { fg = colors.mist_gray })
-  hi("WhichKeyFloat", { bg = "#222222" })
-  hi("WhichKeyValue", { fg = colors.eerie_green })
+  hi("@lsp.type.class", { fg = colors.eye_shine })
+  hi("@lsp.type.interface", { fg = colors.eye_shine })
+  hi("@lsp.type.type", { fg = colors.eye_shine })
+  hi("@lsp.type.function", { fg = colors.eye_shine })
+  hi("@lsp.type.method", { fg = colors.eye_shine })
+  hi("@lsp.type.variable", { fg = colors.fang })
+  hi("@lsp.type.property", { fg = colors.bone })
+  hi("@lsp.type.parameter", { fg = colors.fang })
+  hi("@lsp.type.keyword", { fg = colors.blood })
+
+  -- Nvim-tree
+  hi("NvimTreeNormal", { fg = colors.fang, bg = colors.void })
+  hi("NvimTreeFolderIcon", { fg = colors.lightning })
+  hi("NvimTreeFolderName", { fg = colors.fang })
+  hi("NvimTreeIndentMarker", { fg = colors.cave_stone })
+  hi("NvimTreeOpenedFolderName", { fg = colors.eye_shine })
+
+  -- Which-key
+  hi("WhichKey", { fg = colors.blood })
+  hi("WhichKeyGroup", { fg = colors.eye_glow })
+  hi("WhichKeyDesc", { fg = colors.fang })
+  hi("WhichKeySeperator", { fg = colors.mist })
+  hi("WhichKeySeparator", { fg = colors.mist })
+  hi("WhichKeyFloat", { bg = colors.cave })
+  hi("WhichKeyValue", { fg = colors.eye_glow })
   
   -- Enhanced Tree-sitter groups for better syntax definition
   -- Punctuation and delimiters
-  hi("@punctuation.delimiter", { fg = colors.mist_gray })
-  hi("@punctuation.bracket", { fg = colors.medium_gray })
-  hi("@punctuation.special", { fg = colors.ember_orange })
-  
+  hi("@punctuation.delimiter", { fg = colors.mist })
+  hi("@punctuation.bracket", { fg = colors.stone })
+  hi("@punctuation.special", { fg = colors.ember })
+
   -- Enhanced markup groups
-  hi("@markup.heading", { fg = colors.bone_white, bold = true })
-  hi("@markup.heading.1", { fg = colors.bone_white, bold = true })
-  hi("@markup.heading.2", { fg = colors.fire_red, bold = true })
-  hi("@markup.heading.3", { fg = colors.bright_green, bold = true })
-  hi("@markup.heading.4", { fg = colors.ember_orange, bold = true })
-  hi("@markup.heading.5", { fg = colors.toxic_green, bold = true })
-  hi("@markup.heading.6", { fg = colors.mist_gray, bold = true })
-  hi("@markup.list", { fg = colors.fire_red })
-  hi("@markup.list.checked", { fg = colors.bright_green })
-  hi("@markup.list.unchecked", { fg = colors.fire_red })
-  hi("@markup.link", { fg = colors.gmork_green, underline = true })
-  hi("@markup.link.label", { fg = colors.bright_green })
-  hi("@markup.link.url", { fg = colors.gmork_green })
-  hi("@markup.raw", { fg = colors.fang_orange })
-  hi("@markup.raw.block", { fg = colors.fang_orange, bg = "#111111" })
-  hi("@markup.quote", { fg = colors.mist_gray, italic = true })
-  hi("@markup.math", { fg = colors.fang_orange })
-  hi("@markup.environment", { fg = colors.toxic_green })
-  hi("@markup.environment.name", { fg = colors.bright_green })
-  hi("@markup.strikethrough", { fg = colors.mist_gray, strikethrough = true })
-  hi("@markup.strong", { fg = colors.bone_white, bold = true })
-  hi("@markup.italic", { fg = colors.bone_white, italic = true })
-  hi("@markup.underline", { fg = colors.bone_white, underline = true })
-  
+  hi("@markup.heading", { fg = colors.fang, bold = true })
+  hi("@markup.heading.1", { fg = colors.fang, bold = true })
+  hi("@markup.heading.2", { fg = colors.blood, bold = true })
+  hi("@markup.heading.3", { fg = colors.eye_shine, bold = true })
+  hi("@markup.heading.4", { fg = colors.ember, bold = true })
+  hi("@markup.heading.5", { fg = colors.lightning, bold = true })
+  hi("@markup.heading.6", { fg = colors.mist, bold = true })
+  hi("@markup.list", { fg = colors.blood })
+  hi("@markup.list.checked", { fg = colors.eye_shine })
+  hi("@markup.list.unchecked", { fg = colors.blood })
+  hi("@markup.link", { fg = colors.eye_glow, underline = true })
+  hi("@markup.link.label", { fg = colors.eye_shine })
+  hi("@markup.link.url", { fg = colors.eye_glow })
+  hi("@markup.raw", { fg = colors.ember })
+  hi("@markup.raw.block", { fg = colors.ember, bg = colors.shadow })
+  hi("@markup.quote", { fg = colors.mist, italic = true })
+  hi("@markup.math", { fg = colors.ember })
+  hi("@markup.environment", { fg = colors.eye_shine })
+  hi("@markup.environment.name", { fg = colors.eye_shine })
+  hi("@markup.strikethrough", { fg = colors.mist, strikethrough = true })
+  hi("@markup.strong", { fg = colors.fang, bold = true })
+  hi("@markup.italic", { fg = colors.fang, italic = true })
+  hi("@markup.underline", { fg = colors.fang, underline = true })
+
   -- Enhanced attribute groups
-  hi("@attribute", { fg = colors.wolf_cyan })
-  hi("@attribute.builtin", { fg = colors.toxic_green })
-  
+  hi("@attribute", { fg = colors.cyan })
+  hi("@attribute.builtin", { fg = colors.lightning })
+
   -- Enhanced variable groups
-  hi("@variable.member", { fg = colors.bone_white })
-  hi("@variable.parameter.builtin", { fg = colors.toxic_green })
-  
+  hi("@variable.member", { fg = colors.bone })
+  hi("@variable.parameter.builtin", { fg = colors.lightning })
+
   -- Enhanced function groups
-  hi("@function.method", { fg = colors.bright_green })
-  hi("@function.method.call", { fg = colors.bright_green })
-  hi("@function.macro", { fg = colors.gmork_green })
-  
+  hi("@function.method", { fg = colors.eye_shine })
+  hi("@function.method.call", { fg = colors.eye_shine })
+  hi("@function.macro", { fg = colors.eye_glow })
+
   -- Enhanced type groups
-  hi("@type.qualifier", { fg = colors.fire_red })
-  hi("@type.definition", { fg = colors.toxic_green })
-  
+  hi("@type.qualifier", { fg = colors.blood })
+  hi("@type.definition", { fg = colors.eye_shine })
+
   -- Namespace and module groups
-  hi("@module", { fg = colors.shadow_blue })
-  hi("@module.builtin", { fg = colors.toxic_green })
-  hi("@namespace", { fg = colors.shadow_blue })
-  hi("@namespace.builtin", { fg = colors.toxic_green })
-  
+  hi("@module", { fg = colors.lightning })
+  hi("@module.builtin", { fg = colors.lightning_bright })
+  hi("@namespace", { fg = colors.lightning })
+  hi("@namespace.builtin", { fg = colors.lightning_bright })
+
   -- Enhanced constant groups
-  hi("@constant.builtin", { fg = colors.rust_brown })
-  hi("@constant.macro", { fg = colors.rust_brown })
-  
+  hi("@constant.builtin", { fg = colors.ember_bright })
+  hi("@constant.macro", { fg = colors.ember_bright })
+
   -- Enhanced keyword groups
-  hi("@keyword.modifier", { fg = colors.fire_red })
-  hi("@keyword.type", { fg = colors.fire_red })
-  hi("@keyword.coroutine", { fg = colors.mystic_purple })
-  hi("@keyword.debug", { fg = colors.blood_red })
-  hi("@keyword.directive", { fg = colors.gmork_green })
-  hi("@keyword.directive.define", { fg = colors.gmork_green })
-  hi("@keyword.exception", { fg = colors.blood_red })
-  
+  hi("@keyword.modifier", { fg = colors.blood })
+  hi("@keyword.type", { fg = colors.blood })
+  hi("@keyword.coroutine", { fg = colors.lightning })
+  hi("@keyword.debug", { fg = colors.wound })
+  hi("@keyword.directive", { fg = colors.eye_glow })
+  hi("@keyword.directive.define", { fg = colors.eye_glow })
+  hi("@keyword.exception", { fg = colors.wound })
+
   -- Enhanced string groups
-  hi("@string.documentation", { fg = colors.eerie_green, italic = true })
-  hi("@string.regexp", { fg = colors.ember_orange })
-  hi("@string.escape", { fg = colors.fang_orange })
-  hi("@string.special", { fg = colors.fang_orange })
-  hi("@string.special.symbol", { fg = colors.fang_orange })
-  hi("@string.special.url", { fg = colors.gmork_green, underline = true })
-  hi("@string.special.path", { fg = colors.eerie_green })
-  
+  hi("@string.documentation", { fg = colors.eye_glow, italic = true })
+  hi("@string.regexp", { fg = colors.ember })
+  hi("@string.escape", { fg = colors.ember_bright })
+  hi("@string.special", { fg = colors.ember_bright })
+  hi("@string.special.symbol", { fg = colors.ember_bright })
+  hi("@string.special.url", { fg = colors.eye_glow, underline = true })
+  hi("@string.special.path", { fg = colors.eye_glow })
+
   -- Enhanced comment groups
-  hi("@comment.documentation", { fg = colors.mist_gray, italic = true })
-  hi("@comment.error", { fg = colors.blood_red, italic = true })
-  hi("@comment.warning", { fg = colors.ember_orange, italic = true })
-  hi("@comment.todo", { fg = colors.bright_green, italic = true, bold = true })
-  hi("@comment.note", { fg = colors.gmork_green, italic = true })
-  
+  hi("@comment.documentation", { fg = colors.mist, italic = true })
+  hi("@comment.error", { fg = colors.blood, italic = true })
+  hi("@comment.warning", { fg = colors.ember, italic = true })
+  hi("@comment.todo", { fg = colors.eye_shine, italic = true, bold = true })
+  hi("@comment.note", { fg = colors.eye_glow, italic = true })
+
   -- Additional LSP semantic tokens
-  hi("@lsp.type.namespace", { fg = colors.shadow_blue })
-  hi("@lsp.type.enum", { fg = colors.rust_brown })
-  hi("@lsp.type.enumMember", { fg = colors.fang_orange })
-  hi("@lsp.type.decorator", { fg = colors.wolf_cyan })
-  hi("@lsp.type.macro", { fg = colors.gmork_green })
-  hi("@lsp.type.generic", { fg = colors.toxic_green })
-  hi("@lsp.type.typeParameter", { fg = colors.toxic_green })
-  hi("@lsp.type.selfKeyword", { fg = colors.mystic_purple })
-  hi("@lsp.type.builtinType", { fg = colors.toxic_green })
+  hi("@lsp.type.namespace", { fg = colors.lightning })
+  hi("@lsp.type.enum", { fg = colors.ember_bright })
+  hi("@lsp.type.enumMember", { fg = colors.ember })
+  hi("@lsp.type.decorator", { fg = colors.cyan })
+  hi("@lsp.type.macro", { fg = colors.eye_glow })
+  hi("@lsp.type.generic", { fg = colors.eye_shine })
+  hi("@lsp.type.typeParameter", { fg = colors.eye_shine })
+  hi("@lsp.type.selfKeyword", { fg = colors.lightning })
+  hi("@lsp.type.builtinType", { fg = colors.eye_shine })
   hi("@lsp.mod.declaration", { bold = true })
   hi("@lsp.mod.definition", { bold = true })
   hi("@lsp.mod.readonly", { italic = true })
@@ -383,98 +388,216 @@ function M.setup()
   hi("@lsp.mod.deprecated", { strikethrough = true })
   
   -- Modern UI elements
-  hi("FloatBorder", { fg = colors.dark_gray, bg = "#222222" })
-  hi("FloatTitle", { fg = colors.bone_white, bg = "#222222", bold = true })
-  hi("WinSeparator", { fg = colors.dark_gray })
-  hi("WinBar", { fg = colors.bone_white, bg = "#111111" })
-  hi("WinBarNC", { fg = colors.mist_gray, bg = "#111111" })
-  
+  hi("FloatBorder", { fg = colors.cave_stone, bg = colors.cave })
+  hi("FloatTitle", { fg = colors.fang, bg = colors.cave, bold = true })
+  hi("WinSeparator", { fg = colors.cave_stone })
+  hi("WinBar", { fg = colors.fang, bg = colors.shadow })
+  hi("WinBarNC", { fg = colors.mist, bg = colors.shadow })
+
   -- Enhanced Telescope groups
-  hi("TelescopeTitle", { fg = colors.bone_white, bold = true })
-  hi("TelescopePromptTitle", { fg = colors.fire_red, bold = true })
-  hi("TelescopeResultsTitle", { fg = colors.bright_green, bold = true })
-  hi("TelescopePreviewTitle", { fg = colors.ember_orange, bold = true })
-  hi("TelescopePromptBorder", { fg = colors.fire_red })
-  hi("TelescopeResultsBorder", { fg = colors.bright_green })
-  hi("TelescopePreviewBorder", { fg = colors.ember_orange })
-  hi("TelescopePromptNormal", { fg = colors.bone_white, bg = "#222222" })
-  hi("TelescopeResultsNormal", { fg = colors.bone_white, bg = "#111111" })
-  hi("TelescopePreviewNormal", { fg = colors.bone_white, bg = "#111111" })
-  hi("TelescopeSelectionCaret", { fg = colors.fire_red })
-  hi("TelescopeMultiSelection", { fg = colors.bright_green })
+  hi("TelescopeTitle", { fg = colors.fang, bold = true })
+  hi("TelescopePromptTitle", { fg = colors.blood, bold = true })
+  hi("TelescopeResultsTitle", { fg = colors.eye_shine, bold = true })
+  hi("TelescopePreviewTitle", { fg = colors.ember, bold = true })
+  hi("TelescopePromptBorder", { fg = colors.blood })
+  hi("TelescopeResultsBorder", { fg = colors.eye_shine })
+  hi("TelescopePreviewBorder", { fg = colors.ember })
+  hi("TelescopePromptNormal", { fg = colors.fang, bg = colors.cave })
+  hi("TelescopeResultsNormal", { fg = colors.fang, bg = colors.shadow })
+  hi("TelescopePreviewNormal", { fg = colors.fang, bg = colors.shadow })
+  hi("TelescopeSelectionCaret", { fg = colors.blood })
+  hi("TelescopeMultiSelection", { fg = colors.eye_shine })
   
   -- nvim-cmp completion menu
-  hi("CmpItemAbbrDeprecated", { fg = colors.mist_gray, strikethrough = true })
-  hi("CmpItemAbbrMatch", { fg = colors.bright_green, bold = true })
-  hi("CmpItemAbbrMatchFuzzy", { fg = colors.bright_green })
-  hi("CmpItemKindText", { fg = colors.bone_white })
-  hi("CmpItemKindMethod", { fg = colors.bright_green })
-  hi("CmpItemKindFunction", { fg = colors.bright_green })
-  hi("CmpItemKindConstructor", { fg = colors.bright_green })
-  hi("CmpItemKindField", { fg = colors.bone_white })
-  hi("CmpItemKindVariable", { fg = colors.bone_white })
-  hi("CmpItemKindClass", { fg = colors.toxic_green })
-  hi("CmpItemKindInterface", { fg = colors.toxic_green })
-  hi("CmpItemKindModule", { fg = colors.shadow_blue })
-  hi("CmpItemKindProperty", { fg = colors.bone_white })
-  hi("CmpItemKindEnum", { fg = colors.rust_brown })
-  hi("CmpItemKindKeyword", { fg = colors.fire_red })
-  hi("CmpItemKindSnippet", { fg = colors.ember_orange })
-  hi("CmpItemKindColor", { fg = colors.fang_orange })
-  hi("CmpItemKindFile", { fg = colors.eerie_green })
-  hi("CmpItemKindReference", { fg = colors.gmork_green })
-  hi("CmpItemKindFolder", { fg = colors.shadow_blue })
-  hi("CmpItemKindEnumMember", { fg = colors.fang_orange })
-  hi("CmpItemKindConstant", { fg = colors.rust_brown })
-  hi("CmpItemKindStruct", { fg = colors.toxic_green })
-  hi("CmpItemKindEvent", { fg = colors.ember_orange })
-  hi("CmpItemKindOperator", { fg = colors.mist_gray })
-  hi("CmpItemKindTypeParameter", { fg = colors.toxic_green })
+  hi("CmpItemAbbrDeprecated", { fg = colors.mist, strikethrough = true })
+  hi("CmpItemAbbrMatch", { fg = colors.eye_shine, bold = true })
+  hi("CmpItemAbbrMatchFuzzy", { fg = colors.eye_shine })
+  hi("CmpItemKindText", { fg = colors.fang })
+  hi("CmpItemKindMethod", { fg = colors.eye_shine })
+  hi("CmpItemKindFunction", { fg = colors.eye_shine })
+  hi("CmpItemKindConstructor", { fg = colors.eye_shine })
+  hi("CmpItemKindField", { fg = colors.bone })
+  hi("CmpItemKindVariable", { fg = colors.fang })
+  hi("CmpItemKindClass", { fg = colors.eye_shine })
+  hi("CmpItemKindInterface", { fg = colors.eye_shine })
+  hi("CmpItemKindModule", { fg = colors.lightning })
+  hi("CmpItemKindProperty", { fg = colors.bone })
+  hi("CmpItemKindEnum", { fg = colors.ember_bright })
+  hi("CmpItemKindKeyword", { fg = colors.blood })
+  hi("CmpItemKindSnippet", { fg = colors.ember })
+  hi("CmpItemKindColor", { fg = colors.ember })
+  hi("CmpItemKindFile", { fg = colors.eye_glow })
+  hi("CmpItemKindReference", { fg = colors.eye_glow })
+  hi("CmpItemKindFolder", { fg = colors.lightning })
+  hi("CmpItemKindEnumMember", { fg = colors.ember })
+  hi("CmpItemKindConstant", { fg = colors.ember_bright })
+  hi("CmpItemKindStruct", { fg = colors.eye_shine })
+  hi("CmpItemKindEvent", { fg = colors.ember })
+  hi("CmpItemKindOperator", { fg = colors.mist })
+  hi("CmpItemKindTypeParameter", { fg = colors.eye_shine })
   
   -- Enhanced NvimTree groups
-  hi("NvimTreeRootFolder", { fg = colors.fire_red, bold = true })
-  hi("NvimTreeGitDirty", { fg = colors.ember_orange })
-  hi("NvimTreeGitNew", { fg = colors.bright_green })
-  hi("NvimTreeGitDeleted", { fg = colors.blood_red })
-  hi("NvimTreeGitRenamed", { fg = colors.fang_orange })
-  hi("NvimTreeGitStaged", { fg = colors.bright_green })
-  hi("NvimTreeSpecialFile", { fg = colors.ember_orange, underline = true })
-  hi("NvimTreeImageFile", { fg = colors.fang_orange })
-  hi("NvimTreeMarkdownFile", { fg = colors.bright_green })
-  hi("NvimTreeExecFile", { fg = colors.fire_red, bold = true })
-  hi("NvimTreeSymlink", { fg = colors.wolf_cyan, italic = true })
-  hi("NvimTreeBookmark", { fg = colors.mystic_purple })
-  
-  -- Terminal colors for integrated terminal
-  vim.g.terminal_color_0 = colors.void_black
-  vim.g.terminal_color_1 = colors.blood_red
-  vim.g.terminal_color_2 = colors.bright_green
-  vim.g.terminal_color_3 = colors.ember_orange
-  vim.g.terminal_color_4 = colors.shadow_blue
-  vim.g.terminal_color_5 = colors.mystic_purple
-  vim.g.terminal_color_6 = colors.wolf_cyan
-  vim.g.terminal_color_7 = colors.mist_gray
-  vim.g.terminal_color_8 = colors.dark_gray
-  vim.g.terminal_color_9 = colors.fire_red
-  vim.g.terminal_color_10 = colors.eerie_green
-  vim.g.terminal_color_11 = colors.fang_orange
-  vim.g.terminal_color_12 = colors.gmork_green
-  vim.g.terminal_color_13 = colors.bright_green
-  vim.g.terminal_color_14 = colors.toxic_green
-  vim.g.terminal_color_15 = colors.bone_white
+  hi("NvimTreeRootFolder", { fg = colors.blood, bold = true })
+  hi("NvimTreeGitDirty", { fg = colors.ember })
+  hi("NvimTreeGitNew", { fg = colors.eye_shine })
+  hi("NvimTreeGitDeleted", { fg = colors.blood })
+  hi("NvimTreeGitRenamed", { fg = colors.ember_bright })
+  hi("NvimTreeGitStaged", { fg = colors.eye_shine })
+  hi("NvimTreeSpecialFile", { fg = colors.ember, underline = true })
+  hi("NvimTreeImageFile", { fg = colors.ember })
+  hi("NvimTreeMarkdownFile", { fg = colors.eye_shine })
+  hi("NvimTreeExecFile", { fg = colors.blood, bold = true })
+  hi("NvimTreeSymlink", { fg = colors.cyan, italic = true })
+  hi("NvimTreeBookmark", { fg = colors.lightning })
+
+  -- Terminal colors for integrated terminal (matching Alacritty)
+  vim.g.terminal_color_0 = colors.shadow           -- black
+  vim.g.terminal_color_1 = colors.blood            -- red
+  vim.g.terminal_color_2 = colors.eye_glow         -- green
+  vim.g.terminal_color_3 = colors.ember            -- yellow
+  vim.g.terminal_color_4 = colors.lightning        -- blue
+  vim.g.terminal_color_5 = colors.void_purple      -- magenta
+  vim.g.terminal_color_6 = colors.cyan             -- cyan
+  vim.g.terminal_color_7 = colors.fang             -- white
+  vim.g.terminal_color_8 = colors.cave_stone       -- bright black
+  vim.g.terminal_color_9 = "#ef4444"               -- bright red
+  vim.g.terminal_color_10 = colors.eye_shine       -- bright green
+  vim.g.terminal_color_11 = colors.ember_bright    -- bright yellow
+  vim.g.terminal_color_12 = colors.lightning_bright -- bright blue
+  vim.g.terminal_color_13 = colors.lightning       -- bright magenta
+  vim.g.terminal_color_14 = colors.cyan_bright     -- bright cyan
+  vim.g.terminal_color_15 = "#fafafa"              -- bright white
   
   -- Bufferline plugin support
-  hi("BufferLineFill", { bg = "#111111" })
-  hi("BufferLineBackground", { fg = colors.mist_gray, bg = "#111111" })
-  hi("BufferLineBufferSelected", { fg = colors.bone_white, bg = "#222222", bold = true })
-  hi("BufferLineBufferVisible", { fg = colors.mist_gray, bg = "#111111" })
-  hi("BufferLineSeparator", { fg = colors.dark_gray, bg = "#111111" })
-  hi("BufferLineSeparatorSelected", { fg = colors.dark_gray, bg = "#222222" })
-  hi("BufferLineSeparatorVisible", { fg = colors.dark_gray, bg = "#111111" })
-  hi("BufferLineIndicatorSelected", { fg = colors.fire_red, bg = "#222222" })
-  hi("BufferLineModified", { fg = colors.ember_orange, bg = "#111111" })
-  hi("BufferLineModifiedSelected", { fg = colors.ember_orange, bg = "#222222" })
-  hi("BufferLineModifiedVisible", { fg = colors.ember_orange, bg = "#111111" })
+  hi("BufferLineFill", { bg = colors.shadow })
+  hi("BufferLineBackground", { fg = colors.mist, bg = colors.shadow })
+  hi("BufferLineBufferSelected", { fg = colors.fang, bg = colors.cave, bold = true })
+  hi("BufferLineBufferVisible", { fg = colors.mist, bg = colors.shadow })
+  hi("BufferLineSeparator", { fg = colors.cave_stone, bg = colors.shadow })
+  hi("BufferLineSeparatorSelected", { fg = colors.cave_stone, bg = colors.cave })
+  hi("BufferLineSeparatorVisible", { fg = colors.cave_stone, bg = colors.shadow })
+  hi("BufferLineIndicatorSelected", { fg = colors.blood, bg = colors.cave })
+  hi("BufferLineModified", { fg = colors.ember, bg = colors.shadow })
+  hi("BufferLineModifiedSelected", { fg = colors.ember, bg = colors.cave })
+  hi("BufferLineModifiedVisible", { fg = colors.ember, bg = colors.shadow })
+
+  -- Rainbow delimiters (nested brackets)
+  hi("RainbowDelimiterRed", { fg = colors.blood })
+  hi("RainbowDelimiterYellow", { fg = colors.ember })
+  hi("RainbowDelimiterGreen", { fg = colors.eye_shine })
+  hi("RainbowDelimiterCyan", { fg = colors.cyan })
+  hi("RainbowDelimiterViolet", { fg = colors.lightning })
+  hi("RainbowDelimiterOrange", { fg = colors.ember_bright })
+  hi("RainbowDelimiterBlue", { fg = colors.lightning_bright })
+
+  -- Flash.nvim
+  hi("FlashBackdrop", { fg = colors.stone })
+  hi("FlashLabel", { fg = colors.void, bg = colors.eye_shine, bold = true })
+  hi("FlashMatch", { fg = colors.fang, bg = colors.cave_stone })
+  hi("FlashCurrent", { fg = colors.void, bg = colors.ember })
+  hi("FlashPrompt", { fg = colors.fang, bg = colors.cave })
+
+  -- Trouble.nvim
+  hi("TroubleNormal", { fg = colors.fang, bg = colors.shadow })
+  hi("TroubleNormalNC", { fg = colors.mist, bg = colors.shadow })
+  hi("TroubleText", { fg = colors.fang })
+  hi("TroubleCount", { fg = colors.void, bg = colors.eye_shine, bold = true })
+  hi("TroubleFile", { fg = colors.lightning })
+  hi("TroubleFoldIcon", { fg = colors.blood })
+  hi("TroubleLocation", { fg = colors.mist })
+  hi("TroubleIndent", { fg = colors.cave_stone })
+  hi("TroubleCode", { fg = colors.mist, italic = true })
+  hi("TroubleSource", { fg = colors.mist, italic = true })
+
+  -- Todo-comments
+  hi("TodoBgTODO", { fg = colors.void, bg = colors.lightning, bold = true })
+  hi("TodoFgTODO", { fg = colors.lightning })
+  hi("TodoBgFIX", { fg = colors.void, bg = colors.blood, bold = true })
+  hi("TodoFgFIX", { fg = colors.blood })
+  hi("TodoBgHACK", { fg = colors.void, bg = colors.ember, bold = true })
+  hi("TodoFgHACK", { fg = colors.ember })
+  hi("TodoBgWARN", { fg = colors.void, bg = colors.ember_bright, bold = true })
+  hi("TodoFgWARN", { fg = colors.ember_bright })
+  hi("TodoBgPERF", { fg = colors.void, bg = colors.lightning_bright, bold = true })
+  hi("TodoFgPERF", { fg = colors.lightning_bright })
+  hi("TodoBgNOTE", { fg = colors.void, bg = colors.eye_shine, bold = true })
+  hi("TodoFgNOTE", { fg = colors.eye_shine })
+  hi("TodoBgTEST", { fg = colors.void, bg = colors.cyan, bold = true })
+  hi("TodoFgTEST", { fg = colors.cyan })
+
+  -- Indent-blankline scope
+  hi("IblIndent", { fg = colors.cave })
+  hi("IblScope", { fg = colors.blood })
+  hi("IblWhitespace", { fg = colors.cave })
+
+  -- Nvim-notify
+  hi("NotifyERRORBorder", { fg = colors.wound })
+  hi("NotifyERRORIcon", { fg = colors.blood })
+  hi("NotifyERRORTitle", { fg = colors.blood, bold = true })
+  hi("NotifyWARNBorder", { fg = colors.ember })
+  hi("NotifyWARNIcon", { fg = colors.ember_bright })
+  hi("NotifyWARNTitle", { fg = colors.ember_bright, bold = true })
+  hi("NotifyINFOBorder", { fg = colors.eye_shine })
+  hi("NotifyINFOIcon", { fg = colors.eye_glow })
+  hi("NotifyINFOTitle", { fg = colors.eye_glow, bold = true })
+  hi("NotifyDEBUGBorder", { fg = colors.mist })
+  hi("NotifyDEBUGIcon", { fg = colors.mist })
+  hi("NotifyDEBUGTitle", { fg = colors.mist, bold = true })
+  hi("NotifyTRACEBorder", { fg = colors.lightning })
+  hi("NotifyTRACEIcon", { fg = colors.lightning })
+  hi("NotifyTRACETitle", { fg = colors.lightning, bold = true })
+  hi("NotifyBackground", { bg = colors.shadow })
+
+  -- Dressing.nvim
+  hi("DressingInputBorder", { fg = colors.blood })
+  hi("DressingInputNormal", { fg = colors.fang, bg = colors.cave })
+  hi("DressingInputPrompt", { fg = colors.eye_shine, bold = true })
+
+  -- Crates.nvim (Rust Cargo.toml)
+  hi("CratesNvimLoading", { fg = colors.mist })
+  hi("CratesNvimVersion", { fg = colors.eye_shine })
+  hi("CratesNvimPreRelease", { fg = colors.ember })
+  hi("CratesNvimYanked", { fg = colors.blood })
+  hi("CratesNvimNoMatch", { fg = colors.wound })
+  hi("CratesNvimUpgrade", { fg = colors.eye_glow })
+  hi("CratesNvimError", { fg = colors.blood })
+
+  -- Rustaceanvim
+  hi("RustaceanInlayHint", { fg = colors.stone, italic = true })
 end
+
+-- Custom lualine theme
+M.lualine_theme = {
+  normal = {
+    a = { fg = colors.void, bg = colors.eye_shine, gui = "bold" },
+    b = { fg = colors.fang, bg = colors.cave_stone },
+    c = { fg = colors.mist, bg = colors.shadow },
+  },
+  insert = {
+    a = { fg = colors.void, bg = colors.blood, gui = "bold" },
+    b = { fg = colors.fang, bg = colors.cave_stone },
+    c = { fg = colors.mist, bg = colors.shadow },
+  },
+  visual = {
+    a = { fg = colors.void, bg = colors.lightning, gui = "bold" },
+    b = { fg = colors.fang, bg = colors.cave_stone },
+    c = { fg = colors.mist, bg = colors.shadow },
+  },
+  replace = {
+    a = { fg = colors.void, bg = colors.ember, gui = "bold" },
+    b = { fg = colors.fang, bg = colors.cave_stone },
+    c = { fg = colors.mist, bg = colors.shadow },
+  },
+  command = {
+    a = { fg = colors.void, bg = colors.cyan, gui = "bold" },
+    b = { fg = colors.fang, bg = colors.cave_stone },
+    c = { fg = colors.mist, bg = colors.shadow },
+  },
+  inactive = {
+    a = { fg = colors.mist, bg = colors.shadow },
+    b = { fg = colors.mist, bg = colors.shadow },
+    c = { fg = colors.stone, bg = colors.shadow },
+  },
+}
 
 return M

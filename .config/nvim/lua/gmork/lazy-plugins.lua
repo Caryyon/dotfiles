@@ -19,6 +19,24 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Core dependencies
   { "nvim-lua/plenary.nvim" },
+
+  -- Seamless tmux/nvim pane navigation (Ctrl+hjkl)
+  {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+    },
+    keys = {
+      { "<C-h>", "<cmd>TmuxNavigateLeft<cr>", desc = "Navigate left" },
+      { "<C-j>", "<cmd>TmuxNavigateDown<cr>", desc = "Navigate down" },
+      { "<C-k>", "<cmd>TmuxNavigateUp<cr>", desc = "Navigate up" },
+      { "<C-l>", "<cmd>TmuxNavigateRight<cr>", desc = "Navigate right" },
+    },
+  },
   
   -- UI and navigation
   {
@@ -57,7 +75,85 @@ require("lazy").setup({
   { "ahmedkhalf/project.nvim", event = "VeryLazy" },
   -- Note: impatient.nvim is not needed with Lazy.nvim as it has built-in caching
   -- { "lewis6991/impatient.nvim", event = "VeryLazy" },
-  { "lukas-reineke/indent-blankline.nvim", event = { "BufReadPost", "BufNewFile" } },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    main = "ibl",
+  },
+
+  -- Better UI for vim.ui.select and vim.ui.input
+  {
+    "stevearc/dressing.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("dressing").setup({
+        input = {
+          border = "rounded",
+          win_options = {
+            winblend = 0,
+          },
+        },
+        select = {
+          backend = { "telescope", "builtin" },
+          telescope = {
+            layout_config = {
+              width = 0.5,
+              height = 0.4,
+            },
+          },
+          builtin = {
+            border = "rounded",
+            win_options = {
+              winblend = 0,
+            },
+          },
+        },
+      })
+    end,
+  },
+
+  -- Better notifications
+  {
+    "rcarriga/nvim-notify",
+    event = "VeryLazy",
+    config = function()
+      local notify = require("notify")
+      notify.setup({
+        background_colour = "#000000",
+        fps = 60,
+        render = "compact",
+        stages = "fade",
+        timeout = 3000,
+        top_down = true,
+      })
+      vim.notify = notify
+    end,
+  },
+
+  -- Rainbow delimiters for nested brackets
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      local rainbow = require("rainbow-delimiters")
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow.strategy["global"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterCyan",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterOrange",
+        },
+      }
+    end,
+  },
   
   {
     "goolord/alpha-nvim",
@@ -196,7 +292,13 @@ require("lazy").setup({
       { "<leader>g", desc = "Live Grep" },
       { "<leader>b", desc = "Buffers" },
     },
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+      },
+    },
   },
   
   -- Treesitter
@@ -204,7 +306,10 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     build = ":TSUpdate",
-    dependencies = { "nvim-treesitter/playground" },
+    dependencies = {
+      "nvim-treesitter/playground",
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
   },
   
   -- Git
@@ -229,10 +334,116 @@ require("lazy").setup({
     },
   },
   { "JoosepAlviste/nvim-ts-context-commentstring", event = "VeryLazy" },
-  
+
+  -- Surround text objects (add/change/delete surrounding pairs)
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup()
+    end,
+  },
+
+  -- Flash.nvim for better motion/jumping
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    },
+  },
+
   -- Utilities
   { "mbbill/undotree", cmd = "UndotreeToggle" },
-  
+
+  -- Harpoon for quick file navigation
+  {
+    "ThePrimeagen/harpoon",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "VeryLazy",
+  },
+
+  -- Formatting with conform.nvim
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+  },
+
+  -- Linting with nvim-lint
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+  },
+
+  -- Which-key for keybinding discovery
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("which-key").setup({
+        plugins = {
+          marks = true,
+          registers = true,
+          spelling = { enabled = false },
+        },
+        win = {
+          border = "rounded",
+        },
+      })
+      -- Register key groups
+      require("which-key").add({
+        { "<leader>l", group = "LSP" },
+        { "<leader>f", group = "Find" },
+        { "<leader>g", group = "Git" },
+        { "<leader>d", group = "Debug" },
+        { "<leader>p", group = "Plugins" },
+        { "<leader>s", group = "Session" },
+        { "<leader>n", group = "Nx" },
+        { "<leader>o", group = "Ollama" },
+        { "<leader>x", group = "Trouble" },
+        { "<leader>r", group = "Rust" },
+        { "<leader>c", group = "Crates" },
+      })
+    end,
+  },
+
+  -- Todo-comments for highlighting TODO/FIXME/etc
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("todo-comments").setup()
+    end,
+    keys = {
+      { "<leader>fT", "<cmd>TodoTelescope<cr>", desc = "Find TODOs" },
+      { "]t", function() require("todo-comments").jump_next() end, desc = "Next TODO" },
+      { "[t", function() require("todo-comments").jump_prev() end, desc = "Prev TODO" },
+    },
+  },
+
+  -- Trouble for better diagnostics list
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = { "Trouble" },
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+    },
+    config = function()
+      require("trouble").setup()
+    end,
+  },
+
   -- AI Integration
   -- Copilot: Set COPILOT_GITHUB_ENTERPRISE_HOST in ~/.zshrc.local for enterprise
   -- Example: export COPILOT_GITHUB_ENTERPRISE_HOST="github.mycompany.com"
@@ -295,11 +506,99 @@ require("lazy").setup({
     "mfussenegger/nvim-dap",
     dependencies = {
       "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio", -- Required by nvim-dap-ui
       "ravenxrz/DAPInstall.nvim",
     },
     keys = {
       { "<leader>d", desc = "Debug" },
     },
+  },
+
+  -- Rust Development
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5",
+    lazy = false, -- Plugin is already lazy
+    ft = { "rust" },
+    config = function()
+      vim.g.rustaceanvim = {
+        tools = {
+          hover_actions = {
+            auto_focus = true,
+          },
+        },
+        server = {
+          on_attach = function(client, bufnr)
+            -- Rust-specific keymaps
+            local opts = { buffer = bufnr, silent = true }
+            vim.keymap.set("n", "<leader>ca", function() vim.cmd.RustLsp("codeAction") end, opts)
+            vim.keymap.set("n", "<leader>rd", function() vim.cmd.RustLsp("debuggables") end, opts)
+            vim.keymap.set("n", "<leader>rr", function() vim.cmd.RustLsp("runnables") end, opts)
+            vim.keymap.set("n", "<leader>rt", function() vim.cmd.RustLsp("testables") end, opts)
+            vim.keymap.set("n", "<leader>rm", function() vim.cmd.RustLsp("expandMacro") end, opts)
+            vim.keymap.set("n", "<leader>rc", function() vim.cmd.RustLsp("openCargo") end, opts)
+            vim.keymap.set("n", "<leader>rp", function() vim.cmd.RustLsp("parentModule") end, opts)
+            vim.keymap.set("n", "<leader>re", function() vim.cmd.RustLsp("explainError") end, opts)
+            vim.keymap.set("n", "K", function() vim.cmd.RustLsp({ "hover", "actions" }) end, opts)
+          end,
+          default_settings = {
+            ["rust-analyzer"] = {
+              checkOnSave = true,
+              check = {
+                command = "clippy",
+              },
+              cargo = {
+                allFeatures = true,
+              },
+              procMacro = {
+                enable = true,
+              },
+            },
+          },
+        },
+      }
+    end,
+  },
+
+  -- Crates.nvim for Cargo.toml dependency management
+  {
+    "saecki/crates.nvim",
+    event = { "BufRead Cargo.toml" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local crates = require("crates")
+      crates.setup({
+        popup = {
+          border = "rounded",
+        },
+        lsp = {
+          enabled = true,
+          actions = true,
+          completion = true,
+          hover = true,
+        },
+      })
+
+      -- Crates.nvim keymaps (only in Cargo.toml)
+      vim.api.nvim_create_autocmd("BufRead", {
+        pattern = "Cargo.toml",
+        callback = function(ev)
+          local opts = { buffer = ev.buf, silent = true }
+          vim.keymap.set("n", "<leader>ct", crates.toggle, opts)
+          vim.keymap.set("n", "<leader>cr", crates.reload, opts)
+          vim.keymap.set("n", "<leader>cv", crates.show_versions_popup, opts)
+          vim.keymap.set("n", "<leader>cf", crates.show_features_popup, opts)
+          vim.keymap.set("n", "<leader>cd", crates.show_dependencies_popup, opts)
+          vim.keymap.set("n", "<leader>cu", crates.update_crate, opts)
+          vim.keymap.set("v", "<leader>cu", crates.update_crates, opts)
+          vim.keymap.set("n", "<leader>cU", crates.upgrade_crate, opts)
+          vim.keymap.set("v", "<leader>cU", crates.upgrade_crates, opts)
+          vim.keymap.set("n", "<leader>cH", crates.open_homepage, opts)
+          vim.keymap.set("n", "<leader>cR", crates.open_repository, opts)
+          vim.keymap.set("n", "<leader>cD", crates.open_documentation, opts)
+        end,
+      })
+    end,
   },
 }, {
   -- Lazy.nvim configuration

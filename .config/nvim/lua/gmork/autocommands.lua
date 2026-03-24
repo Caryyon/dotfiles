@@ -2,9 +2,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "qf", "help", "man", "lspinfo", "spectre_panel" },
 	callback = function()
 		vim.cmd([[
-      nnoremap <silent> <buffer> q :close<CR> 
-      set nobuflisted 
+      nnoremap <silent> <buffer> q :close<CR>
+      set nobuflisted
     ]])
+	end,
+})
+
+-- Close quickfix window after selecting an item
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	pattern = { "qf" },
+	callback = function()
+		vim.keymap.set("n", "<CR>", "<CR>:cclose<CR>", { buffer = true, silent = true })
 	end,
 })
 

@@ -16,11 +16,8 @@ vim.g.mapleader = " "
 --   command_mode = "c",
 
 -- Normal --
--- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
+-- Window navigation handled by vim-tmux-navigator (see lazy-plugins.lua)
+-- This allows seamless Ctrl+hjkl navigation between nvim and tmux panes
 
 -- Vertical Move
 keymap("n", "<C-u>", "<C-u>zz")
@@ -98,7 +95,7 @@ keymap("n", "<leader>fm", "<cmd>lua TelescopeCustom.find_mdx_files()<cr>", opts)
 keymap("n", "<leader>fc", "<cmd>lua TelescopeCustom.find_components()<cr>", opts)
 keymap("n", "<leader>fC", "<cmd>lua TelescopeCustom.find_config_files()<cr>", opts)
 keymap("n", "<leader>ft", "<cmd>lua TelescopeCustom.find_tests()<cr>", opts)
-keymap("n", "<leader>fT", "<cmd>lua TelescopeCustom.search_todos()<cr>", opts)
+-- Note: <leader>fT now uses todo-comments.nvim via TodoTelescope (see lazy-plugins.lua)
 
 -- Plugin management (Lazy)
 keymap("n", "<leader>pi", "<cmd>Lazy install<cr>", opts)

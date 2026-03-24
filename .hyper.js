@@ -21,22 +21,22 @@ module.exports = {
     // letter spacing as a relative unit
     letterSpacing: 0,
     // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
-    cursorColor: '#00ff00', // Gmork green - electric supernatural glow
+    cursorColor: '#4ade80', // Luminous green (Gmork's eyes)
     // terminal text color under BLOCK cursor
-    cursorAccentColor: '#000000',
+    cursorAccentColor: '#0a0a12', // Void
     // `'BEAM'` for |, `'UNDERLINE'` for _, `'BLOCK'` for █
     cursorShape: 'BLOCK',
     // set to `true` (without backticks and without quotes) for blinking cursor
     cursorBlink: false,
     // color of the text
-    foregroundColor: '#ffffff', // Pure glowing white
+    foregroundColor: '#f4f4f5', // Fang white - slightly warm
     // terminal background color
     // opacity is only supported on macOS
-    backgroundColor: '#000000', // Deep void black
+    backgroundColor: '#0a0a12', // Void - deep blue-black (Gmork's fur)
     // terminal selection color
-    selectionColor: 'rgba(0, 255, 0, 0.3)', // Gmork green with transparency
+    selectionColor: 'rgba(42, 42, 54, 0.8)', // Cave stone with transparency
     // border color (window, tabs)
-    borderColor: '#2f2f2f', // Dark gray
+    borderColor: '#12121a', // Shadow (blue-black)
     // custom CSS to embed in the main window
     css: '',
     // custom CSS to embed in the terminal window
@@ -57,25 +57,25 @@ module.exports = {
     // an array here instead of a color map object
 
     // GMORK COLOR PALETTE
-    // Inspired by the mystical dark wolf from The Neverending Story
-    // Deep blacks with supernatural electric greens, fiery reds, and mystical accents
+    // Inspired by the black wolf from The NeverEnding Story
+    // A dark, atmospheric theme with luminous green eyes in blue-black darkness
     colors: {
-      black: '#000000',          // Void black
-      red: '#ff0000',            // Pure blazing red
-      green: '#00ff00',          // Pure electric green (Gmork's eyes)
-      yellow: '#ff8800',         // Molten orange
-      blue: '#0088ff',           // Electric blue
-      magenta: '#ff00ff',        // Pure electric magenta
-      cyan: '#00ffff',           // Electric cyan
-      white: '#ffffff',          // Pure glowing white
-      lightBlack: '#555555',     // Light gray
-      lightRed: '#ff0044',       // Electric crimson
-      lightGreen: '#88ff00',     // Electric lime green
-      lightYellow: '#ffaa00',    // Bright amber
-      lightBlue: '#00aaff',      // Bright electric blue
-      lightMagenta: '#ff44ff',   // Bright magenta
-      lightCyan: '#00ffff',      // Electric cyan
-      lightWhite: '#ffffff',     // Pure white
+      black: '#12121a',          // Shadow (blue-black)
+      red: '#dc2626',            // Blood crimson
+      green: '#3edd78',          // Luminous green (Gmork's eyes)
+      yellow: '#ea580c',         // Ember orange
+      blue: '#7c3aed',           // Lightning purple (The Nothing)
+      magenta: '#4c1d95',        // Void purple (The Nothing)
+      cyan: '#22d3ee',           // Pale cyan
+      white: '#f4f4f5',          // Fang white
+      lightBlack: '#2a2a36',     // Cave stone
+      lightRed: '#ef4444',       // Bright blood
+      lightGreen: '#4ade80',     // Eye shine
+      lightYellow: '#f97316',    // Bright ember
+      lightBlue: '#a78bfa',      // Bright purple
+      lightMagenta: '#7c3aed',   // Lightning purple
+      lightCyan: '#67e8f9',      // Lightning flash
+      lightWhite: '#fafafa',     // Bright fang
     },
     // the shell to run when spawning a new session (i.e. /usr/local/bin/fish)
     // if left empty, your system's login shell will be used by default

@@ -7,7 +7,7 @@ local servers = {
 	-- "bashls", -- Commented out due to installation issues
 	"jsonls",
 	"yamlls",
-	"rust_analyzer",
+	-- "rust_analyzer", -- Managed by rustaceanvim
 	"tailwindcss",
 	-- "denols", -- Disabled to avoid conflicts with ts_ls
 	"svelte",
