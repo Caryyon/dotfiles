@@ -38,9 +38,73 @@ module.exports = {
     // border color (window, tabs)
     borderColor: '#12121a', // Shadow (blue-black)
     // custom CSS to embed in the main window
-    css: '',
+    css: `
+      /* Gmork Theme - Tab Bar & Window Chrome */
+      .header_header {
+        background: linear-gradient(180deg, #12121a 0%, #0a0a12 100%) !important;
+        border-bottom: 1px solid #2a2a36 !important;
+      }
+      .tabs_nav {
+        background: transparent !important;
+      }
+      .tab_tab {
+        background: #12121a !important;
+        border: none !important;
+        color: #71717a !important;
+        transition: all 0.2s ease !important;
+      }
+      .tab_tab:hover {
+        background: #1c1c26 !important;
+        color: #a1a1aa !important;
+      }
+      .tab_active {
+        background: linear-gradient(180deg, #1c1c26 0%, #0a0a12 100%) !important;
+        border-bottom: 2px solid #4ade80 !important;
+        color: #f4f4f5 !important;
+      }
+      .tab_active::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #4ade80;
+        box-shadow: 0 0 10px #4ade80, 0 0 20px rgba(74, 222, 128, 0.5);
+      }
+      .tab_icon {
+        color: #71717a !important;
+      }
+      .tab_icon:hover {
+        color: #dc2626 !important;
+      }
+      .tab_active .tab_icon:hover {
+        color: #ef4444 !important;
+      }
+      /* Subtle glow on window focus */
+      .hyper_main {
+        border: 1px solid #12121a !important;
+      }
+      .hyper_main.isFocused_focused {
+        border: 1px solid #2a2a36 !important;
+        box-shadow: 0 0 30px rgba(74, 222, 128, 0.1) !important;
+      }
+      /* Style the + new tab button */
+      .tab_tab.tab_new {
+        color: #3edd78 !important;
+      }
+      .tab_tab.tab_new:hover {
+        color: #4ade80 !important;
+        text-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+      }
+    `,
     // custom CSS to embed in the terminal window
-    termCSS: '',
+    termCSS: `
+      /* Subtle text rendering improvements */
+      x-screen {
+        -webkit-font-smoothing: antialiased;
+      }
+    `,
     // set custom startup directory (must be an absolute path)
     workingDirectory: '',
     // if you're using a Linux setup which show native menus, set to false
