@@ -1,24 +1,25 @@
 # Gmork ZSH Theme
-# Inspired by the mystical dark Neovim colorscheme
-# Color palette extracted from the Gmork Neovim theme
+# Inspired by the black wolf from The NeverEnding Story
+# A dark, atmospheric theme with luminous green eyes in blue-black darkness
 
-# Use bright electric colors for maximum vibrancy and supernatural glow
 local reset='%f%b'
 local bold='%B'
 
-# Define color variables using bright electric colors for maximum vibrancy
-local green='%F{#00ff00}'         # Pure electric green
-local bright_green='%F{#88ff00}'  # Electric lime green
-local eerie_green='%F{#00ff88}'   # Bright neon green
-local orange='%F{#ff4400}'        # Electric orange
-local red='%F{#ff0000}'           # Pure blazing red
-local purple='%F{#ff00ff}'        # Pure electric magenta
-local blue='%F{#0088ff}'          # Electric blue
-local cyan='%F{#00ffff}'          # Electric cyan
-local brown='%F{#ff8800}'         # Molten orange
-local white='%F{#ffffff}'         # Pure glowing white
-local gray='%F{#555555}'          # LIGHT_GRAY
-local dark_gray='%F{#2f2f2f}'     # DARK_GRAY
+# Gmork color palette - atmospheric and refined
+local green='%F{#3edd78}'         # Luminous green (Gmork's eyes)
+local bright_green='%F{#4ade80}'  # Eye shine
+local dim_green='%F{#166534}'     # Dim glow
+local red='%F{#dc2626}'           # Blood crimson
+local bright_red='%F{#ef4444}'    # Bright blood
+local orange='%F{#ea580c}'        # Ember orange
+local bright_orange='%F{#f97316}' # Bright ember
+local purple='%F{#7c3aed}'        # Lightning purple (The Nothing)
+local void_purple='%F{#4c1d95}'   # Void purple
+local cyan='%F{#22d3ee}'          # Pale cyan
+local bright_cyan='%F{#67e8f9}'   # Lightning flash
+local white='%F{#f4f4f5}'         # Fang white
+local gray='%F{#71717a}'          # Mist
+local light_gray='%F{#a1a1aa}'    # Dim foreground
 
 # Git status function
 function git_prompt_info() {
@@ -50,27 +51,27 @@ function parse_git_dirty() {
 # Additional status functions
 function git_commits_ahead() {
   if [[ -n "$(git rev-list @{upstream}..HEAD 2>/dev/null)" ]]; then
-    echo "${orange}⇡${reset}"
+    echo "${bright_orange}⇡${reset}"
   fi
 }
 
 function git_commits_behind() {
   if [[ -n "$(git rev-list HEAD..@{upstream} 2>/dev/null)" ]]; then
-    echo "${blue}⇣${reset}"
+    echo "${purple}⇣${reset}"
   fi
 }
 
 function command_status() {
-  echo "%(?:${green}⚡:${red}⚡)${reset}"
+  echo "%(?:${bright_green}◆:${bright_red}◆)${reset}"
 }
 
 # Git prompt styling with enhanced status
-ZSH_THEME_GIT_PROMPT_PREFIX="${cyan}[${reset}${bright_green}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="${cyan}]${reset}"
-ZSH_THEME_GIT_PROMPT_DIRTY="${cyan}]${reset} ${red}✗${reset}"
-ZSH_THEME_GIT_PROMPT_CLEAN="${cyan}]${reset} ${green}✓${reset}"
+ZSH_THEME_GIT_PROMPT_PREFIX="${purple}❬${reset}${bright_green}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${purple}❭${reset}"
+ZSH_THEME_GIT_PROMPT_DIRTY="${purple}❭${reset} ${red}✗${reset}"
+ZSH_THEME_GIT_PROMPT_CLEAN="${purple}❭${reset} ${green}✓${reset}"
 
-# Prompt configuration with command status - clean and minimal
-PROMPT='$(command_status) ${green}%c${reset} [%D{%H:%M:%S}] $(git_prompt_info)
-${red}${bold}❯${reset} '
-RPROMPT='${gray}%n@%m${reset}'
+# Prompt configuration - atmospheric and minimal
+PROMPT='$(command_status) ${green}%c${reset} ${gray}%D{%H:%M}${reset} $(git_prompt_info)
+${purple}${bold}❯${reset} '
+RPROMPT='${gray}%n${reset}${void_purple}@${reset}${gray}%m${reset}'
